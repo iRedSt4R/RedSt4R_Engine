@@ -38,10 +38,14 @@ namespace RedSt4R
 		RedSt4R::Graphics::Shader *m_MainShader;
 		ID3D11Buffer *m_VertexBuffer;
 		D3D11_VIEWPORT m_Viewport;
-		//-------Depth|Stencil View---------------
+		//-------Depth|Stencil View---------------//
 		ID3D11Texture2D *m_DepthStencilTexture;
 		ID3D11DepthStencilView *m_DepthStencilView;
 		ID3D11RasterizerState *m_DefaultRasterizationState;
+		//--------Post_Process Texture-------------//
+		ID3D11Texture2D* renderTargetTextureMap;
+		ID3D11RenderTargetView* renderTargetViewMap;
+		ID3D11ShaderResourceView* shaderResourceViewMap;
 		//-----------Static Camera [Temporal]-------------//
 		XMMATRIX mCameraView;
 		XMMATRIX mCameraProjection;
@@ -79,6 +83,10 @@ namespace RedSt4R
 		inline ID3D11InputLayout* GetInputLayout() const { return m_MainShader->GetInputLayout(); }
 		inline ID3D11InputLayout* GetInputLayoutB() const { return m_MainShader->GetInputLayoutB(); }
 		inline ID3D11RasterizerState* GetBackCullingRasterizationState() { return m_DefaultRasterizationState; }
+		inline ID3D11Texture2D* GetTexture2DForPostProcess() { return renderTargetTextureMap; }
+		inline ID3D11RenderTargetView* GetRTVForPostProcess() { return renderTargetViewMap; }
+		inline ID3D11ShaderResourceView* GetSRV2DForPostProcess() { return shaderResourceViewMap; }
+
 		//inline CubeMap* GetCubeMap() { return m_CubeMap; }
 		//inline XMMATRIX GetCameraView() const { return mCameraView; }
 		//inline XMMATRIX GetCameraProjection() const { return mCameraProjection; }

@@ -113,6 +113,12 @@ namespace RedSt4R
 			ID3D11Resource *m_TextureResource;
 			ID3D11SamplerState* MeshSamplerState;
 
+			//---------------- Post Process-----------------//
+			ID3D11Texture2D* renderTargetTextureMap;
+			ID3D11RenderTargetView* renderTargetViewMap;
+			ID3D11ShaderResourceView* shaderResourceViewMap;
+
+			//--------------- GUI Reference ------------------//
 			GuiManager *GUI;
 		
 

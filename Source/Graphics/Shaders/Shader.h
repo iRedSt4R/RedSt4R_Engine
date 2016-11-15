@@ -17,6 +17,7 @@ namespace RedSt4R
 			ID3D11PixelShader *m_PixelShader;
 			ID3D11InputLayout *m_InputLayout;
 			ID3D11InputLayout *m_InputLayoutB;
+			ID3D11InputLayout *m_InputLayoutC;
 			HRESULT hr;
 
 
@@ -28,6 +29,7 @@ namespace RedSt4R
 			void RS_CreatePixelShader(const wchar_t* a_PixelShaderDir);
 			void RS_CreateInputLayout();
 			void RS_CreateInputLayoutB();
+			void RS_CreateInputLayoutC();
 
 			inline ID3D10Blob* GetVertexShaderByteCode() const { return m_VertexShaderByteCode; }
 			inline ID3D10Blob* GetPixelShaderByteCode() const { return m_PixelShaderByteCode; }
@@ -35,6 +37,7 @@ namespace RedSt4R
 			inline ID3D11PixelShader* GetPixelShader() { return m_PixelShader; }
 			inline ID3D11InputLayout* GetInputLayout() const { return m_InputLayout; }
 			inline ID3D11InputLayout* GetInputLayoutB() const { return m_InputLayoutB; }
+			inline ID3D11InputLayout* GetInputLayoutC() const { return m_InputLayoutC; }
 
 		};
 	}

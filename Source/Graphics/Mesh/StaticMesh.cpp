@@ -196,10 +196,10 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 				VertexVec.push_back(tempVertexT);
 			}
 
-	//matDesc.diffuseTextureDir = L"Assets/Cerberus/Cerberus_A.jpg";
-	//matDesc.normalTextureDir = L"Assets/Cerberus/Cerberus_N.jpg";
-	matDesc.rougnessTextureDir = L"Assets/Textures/32i.jpg";
-	//matDesc.metallicTextureDir = L"Assets/Cerberus/.jpg";
+	matDesc.diffuseTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Specular.jpg";
+	matDesc.normalTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Normals.jpg";
+	matDesc.rougnessTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Gloss.jpg";
+	//matDesc.metallicTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Albedo.jpg";
 	InitBuffers();
 
 
@@ -301,9 +301,7 @@ void RedSt4R::Graphics::StaticMesh::InitBuffers()
 	ZeroMemory(&sampDesc, sizeof(sampDesc));
 
 	sampDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.MaxAnisotropy = 16;
 
 	m_Device->CreateSamplerState(&sampDesc, &MeshSamplerState);
 

@@ -24,7 +24,7 @@ void RedSt4R::Dx11Engine::InitEngine()
 	modeDesc.RefreshRate.Numerator = 0;
 	modeDesc.RefreshRate.Denominator = 0;
 	modeDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	modeDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
+	modeDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	modeDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 
 	DXGI_SWAP_CHAIN_DESC swapchainDesc;
@@ -32,7 +32,7 @@ void RedSt4R::Dx11Engine::InitEngine()
 
 	swapchainDesc.BufferDesc = modeDesc;
 	swapchainDesc.BufferCount = 1;
-	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
 	swapchainDesc.SampleDesc.Count = MSAA_QUALITY;
 	swapchainDesc.SampleDesc.Quality = 0;
 	swapchainDesc.OutputWindow = GetActiveWindow();
@@ -69,7 +69,6 @@ void RedSt4R::Dx11Engine::InitEngine()
 	m_MainShader = new RedSt4R::Graphics::Shader(m_Device, m_DeviceContext);
 	m_MainShader->RS_CreateVertexShader(L"Shader.fx");
 	m_MainShader->RS_CreatePixelShader(L"Shader.fx");
-	//m_MainShader->RS_CreateInputLayout();
 	m_MainShader->RS_CreateInputLayoutB();
 	
 	//-------------Creating Depth Stencil View-------------------
@@ -99,6 +98,47 @@ void RedSt4R::Dx11Engine::InitEngine()
 
 	m_Device->CreateRasterizerState(&rsDesc, &m_DefaultRasterizationState);
 	m_DeviceContext->RSSetState(m_DefaultRasterizationState);
+
+	//------------- Creating Texture2D For Post Process ------------------//
+	D3D11_TEXTURE2D_DESC textureDesc;
+	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+
+	///////////////////////// Map's Texture
+	// Initialize the  texture description.
+	ZeroMemory(&textureDesc, sizeof(textureDesc));
+
+	// Setup the texture description.
+	// We will have our map be a square
+	// We will need to have this texture bound as a render target AND a shader resource
+	textureDesc.Width = WINDOW_WIDTH;
+	textureDesc.Height = WINDOW_HEIGHT;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
+
+	// Create the texture
+	m_Device->CreateTexture2D(&textureDesc, NULL, &renderTargetTextureMap);
+	
+
+	renderTargetViewDesc.Format = textureDesc.Format;
+	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	// Create the render target view.
+	m_Device->CreateRenderTargetView(renderTargetTextureMap, &renderTargetViewDesc, &renderTargetViewMap);
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	// Create the shader resource view.
+	m_Device->CreateShaderResourceView(renderTargetTextureMap, &shaderResourceViewDesc, &shaderResourceViewMap);
 }
 
 void RedSt4R::Dx11Engine::PreparePipeline()
