@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5799342E-03AC-4EA6-A536-80057D6C7138}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RedSt4R_Engine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\shared;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\um;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\include;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\shared;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\um;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\include;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\lib64;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\lib\x64;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.14393.0\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;SDL2.lib;SDL2main.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <FxCompile>
+      <EntryPointName>VSMain</EntryPointName>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>
+      </ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\shared;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\um;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\include;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\shared;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.14393.0\um;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\Assimp\lib64;C:\Users\Dragoner\Documents\Visual Studio 2015\Projects\RedSt4R_Engine\Libs\SDL2-2.0.4\lib\x64;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.14393.0\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;SDL2.lib;SDL2main.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <FxCompile>
+      <EntryPointName>VSMain</EntryPointName>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>
+      </ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Core\D3D11Engine\Dx11Engine.cpp" />
+    <ClCompile Include="Source\Core\D3D12Engine\Dx12Engine.cpp" />
+    <ClCompile Include="Source\Core\EngineLoop.cpp" />
+    <ClCompile Include="Source\Graphics\Camera\FirstPersonCamera.cpp" />
+    <ClCompile Include="Source\Graphics\Lights\CubeMap.cpp" />
+    <ClCompile Include="Source\Graphics\Lights\DireLight.cpp" />
+    <ClCompile Include="Source\Graphics\Material\DDSTextureLoader.cpp" />
+    <ClCompile Include="Source\Graphics\Material\Material.cpp" />
+    <ClCompile Include="Source\Graphics\Material\WICTextureLoader.cpp" />
+    <ClCompile Include="Source\Graphics\Mesh\ComplexMesh.cpp" />
+    <ClCompile Include="Source\Graphics\Mesh\Mesh_Manager.cpp" />
+    <ClCompile Include="Source\Graphics\Mesh\StaticMesh.cpp" />
+    <ClCompile Include="Source\Graphics\Shaders\Shader.cpp" />
+    <ClCompile Include="Source\GUI\GuiManager.cpp" />
+    <ClCompile Include="Source\GUI\imgui.cpp" />
+    <ClCompile Include="Source\GUI\imgui_draw.cpp" />
+    <ClCompile Include="Source\GUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Source\Window\SDLMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\DragonerDx11 - Copy\imgui\stb_rect_pack.h" />
+    <ClInclude Include="D:\DragonerDx11 - Copy\imgui\stb_textedit.h" />
+    <ClInclude Include="D:\DragonerDx11 - Copy\imgui\stb_truetype.h" />
+    <ClInclude Include="Source\Core\D3D11Engine\Dx11Engine.h" />
+    <ClInclude Include="Source\Core\D3D12Engine\Dx12Engine.h" />
+    <ClInclude Include="Source\Core\d3dx12.h" />
+    <ClInclude Include="Source\Core\EngineLoop.h" />
+    <ClInclude Include="Source\Core\RS_Engine.h" />
+    <ClInclude Include="Source\Core\stdafx.h" />
+    <ClInclude Include="Source\Debug\DebugMacros.h" />
+    <ClInclude Include="Source\Gameplay\GameMode.h" />
+    <ClInclude Include="Source\Graphics\Camera\Camera.h" />
+    <ClInclude Include="Source\Graphics\Camera\FirstPersonCamera.h" />
+    <ClInclude Include="Source\Graphics\Lights\CubeMap.h" />
+    <ClInclude Include="Source\Graphics\Lights\DireLight.h" />
+    <ClInclude Include="Source\Graphics\Lights\SDirectionalLight.h" />
+    <ClInclude Include="Source\Graphics\Material\DDSTextureLoader.h" />
+    <ClInclude Include="Source\Graphics\Material\Material.h" />
+    <ClInclude Include="Source\Graphics\Material\RS_Material_Desc.h" />
+    <ClInclude Include="Source\Graphics\Material\WICTextureLoader.h" />
+    <ClInclude Include="Source\Graphics\Mesh\ComplexMesh.h" />
+    <ClInclude Include="Source\Graphics\Mesh\StaticMesh.h" />
+    <ClInclude Include="Source\Graphics\Mesh\Mesh_Manager.h" />
+    <ClInclude Include="Source\Graphics\Shaders\Shader.h" />
+    <ClInclude Include="Source\GUI\GuiManager.h" />
+    <ClInclude Include="Source\GUI\imconfig.h" />
+    <ClInclude Include="Source\GUI\imgui.h" />
+    <ClInclude Include="Source\GUI\imgui_impl_dx11.h" />
+    <ClInclude Include="Source\GUI\imgui_internal.h" />
+    <ClInclude Include="Source\GUI\stb_rect_pack.h" />
+    <ClInclude Include="Source\GUI\stb_textedit.h" />
+    <ClInclude Include="Source\GUI\stb_truetype.h" />
+    <ClInclude Include="Source\Managers\TextureManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Graphics\Lights\CubeMapShader.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Core\D3D11Engine\PostProcess.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
