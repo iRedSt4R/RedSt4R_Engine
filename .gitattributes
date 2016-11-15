@@ -1,6 +1,6 @@
 #sources
 *.c 
-*.rb linguist-language=C++ text
+*.rb linguist-language=C++
 *.cc text
 *.cxx text
 *.cpp text
