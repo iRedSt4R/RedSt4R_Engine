@@ -149,14 +149,14 @@ void RedSt4R::Dx11Engine::PreparePipeline()
 	m_DeviceContext->IASetInputLayout(m_MainShader->GetInputLayoutB());
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
+
 }
 
 void RedSt4R::Dx11Engine::UpdatePipeline()
 {
 	m_DeviceContext->VSSetShader(m_MainShader->GetVertexShader(), 0, 0);
 	m_DeviceContext->PSSetShader(m_MainShader->GetPixelShader(), 0, 0);
-	m_DeviceContext->IASetInputLayout(m_MainShader->GetInputLayout());
-
+	//m_DeviceContext->IASetInputLayout(m_MainShader->GetInputLayout());
 	const UINT8 *state = SDL_GetKeyboardState(NULL);
 
 	if (state[SDL_SCANCODE_F1])

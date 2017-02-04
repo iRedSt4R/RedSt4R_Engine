@@ -32,6 +32,13 @@ void RedSt4R::MeshManager::Clear()
 
 }
 
+void RedSt4R::MeshManager::AddWithOffset(char* MeshDir, float x_offset)
+{
+	ComplexMesh *tempMesh = new ComplexMesh(m_Engine, MeshDir, "", GUI);
+	tempMesh->Translate(x_offset, 0, 0);
+	vComplexMeshes.push_back(tempMesh);
+}
+
 RedSt4R::MeshManager::~MeshManager()
 {
 

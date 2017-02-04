@@ -16,25 +16,25 @@ void RedSt4R::Graphics::FirstPersonCamera::UpdateInput()
 {
 	if (state[SDL_SCANCODE_W])
 	{
-		moveBackForward += 0.1f;
+		moveBackForward += 0.5f;
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		moveBackForward -= 0.1f;
+		moveBackForward -= 0.5f;
 	}
 	if (state[SDL_SCANCODE_D])
 	{
-		moveLeftRight += 0.1f;
+		moveLeftRight += 0.5f;
 	}
 	if (state[SDL_SCANCODE_A])
 	{
-		moveLeftRight -= 0.1f;
+		moveLeftRight -= 0.5f;
 	}
 
 	SDL_GetGlobalMouseState(&mx, &my);
 	
-	camYaw += dx * 0.001f;
-	camPitch += dy * 0.001f;
+	camYaw += dx * 0.0018f;
+	camPitch += dy * 0.0018f;
 		
 	prev_mx = mx;
 	prev_my = my;

@@ -23,7 +23,7 @@ namespace RedSt4R
 
 			std::vector <StaticMesh*> vMeshes;
 			std::vector <Material*> vMaterials;
-			Material *TestMaterial;
+			
 			int m_NumberMeshes;
 			int m_CurrentMeshIndex;
 
@@ -42,9 +42,13 @@ namespace RedSt4R
 			void Update();
 			void Draw();
 			void Scale(float scaleFactor);
+			void Translate(float x, float y, float z);
 			void RotateX(float angle);
 			void RotateY(float angle);
 			void RotateZ(float angle);
+			
+		private:
+			void LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc);
 		};
 
 	}

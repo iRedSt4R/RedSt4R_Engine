@@ -57,6 +57,15 @@ GuiManager::GuiManager(Dx11Engine *a_Engine)
 	}
 }
 
+
+GuiManager::GuiManager(EngineResources *a_EngineResources)
+{
+	m_Device = a_EngineResources->GetDevice();
+	m_DeviceContext = a_EngineResources->GetDeviceContext();
+	PrepareGui();
+	SetupImGuiStyle(true, 0.8f);
+}
+
 void GuiManager::SetInputToImGui()
 {
 	ImGuiIO& io = ImGui::GetIO();
@@ -122,10 +131,10 @@ void GuiManager::UpdateGui()
 	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 1.0f);
 	ImGui::Begin("Left", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	
+	ImGui::Separator();
 	ImGui::SliderFloat("", &g_RoughnessValue, 0.0f, 1.0f, "Rougness = %.3f");
 	ImGui::SliderFloat("", &g_GlossinessValue, 0.0f, 1.0f, "Glossiness = %.3f");
-	
+	ImGui::Separator();
 	
 
 

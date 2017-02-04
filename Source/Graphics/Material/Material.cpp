@@ -29,6 +29,23 @@ RedSt4R::Graphics::Material::Material(Dx11Engine *Engine)
 
 void RedSt4R::Graphics::Material::CreateMaterial(RS_Material_Desc &a_materialDesc)
 {	
+	DiffuseTexture = new RedSt4R::API::Texture();
+	DiffuseTexture->LoadTexture(m_Engine->GetEngineResource(), a_materialDesc.diffuseTextureDir, TEXTURE_TYPE_DIFFUSE);
+	bHaveDiffuseTexture = true;
+
+	NormalTexture = new RedSt4R::API::Texture();
+	NormalTexture->LoadTexture(m_Engine->GetEngineResource(), a_materialDesc.normalTextureDir, TEXTURE_TYPE_NORMAL);
+	bHaveNormalTexture = true;
+
+	RougnessTexture = new RedSt4R::API::Texture();
+	RougnessTexture->LoadTexture(m_Engine->GetEngineResource(), a_materialDesc.rougnessTextureDir, TEXTURE_TYPE_ROUGHNESS);
+	bHaveRougnessTexture = true;
+
+	MetallicTexture = new RedSt4R::API::Texture();
+	MetallicTexture->LoadTexture(m_Engine->GetEngineResource(), a_materialDesc.metallicTextureDir, TEXTURE_TYPE_METALLIC);
+	bHaveMetallicMap = true;
+
+	/*
 	HRESULT hr = CreateWICTextureFromFile(m_Device, a_materialDesc.diffuseTextureDir, NULL, &DiffuseTextureRV);
 	if (FAILED(hr))
 	{
@@ -36,7 +53,6 @@ void RedSt4R::Graphics::Material::CreateMaterial(RS_Material_Desc &a_materialDes
 		bHaveDiffuseTexture = false;
 	}
 	else bHaveDiffuseTexture = true;
-
 	if (a_materialDesc.normalTextureDir)
 	{
 		HRESULT hhr = CreateWICTextureFromFile(m_Device, a_materialDesc.normalTextureDir, NULL, &NormalTextureRV);
@@ -47,6 +63,7 @@ void RedSt4R::Graphics::Material::CreateMaterial(RS_Material_Desc &a_materialDes
 		}
 		else bHaveNormalTexture = true;
 	}
+
 	if (a_materialDesc.rougnessTextureDir)
 	{
 		HRESULT hhr = CreateWICTextureFromFile(m_Device, a_materialDesc.rougnessTextureDir, NULL, &RougnessTextureRV);
@@ -67,28 +84,29 @@ void RedSt4R::Graphics::Material::CreateMaterial(RS_Material_Desc &a_materialDes
 		}
 		else bHaveMetallicMap = true;
 	}
+	*/
 
 	bIsCreated = true;
 }
 
 void RedSt4R::Graphics::Material::PrepareMaterial()
 {
-	if (bHaveDiffuseTexture) cbMaterialObject.bHaveDiffuseTexture = 1.0;
-	if (bHaveNormalTexture) cbMaterialObject.bHaveNormalMap = 1.0;
-	if (bHaveRougnessTexture) cbMaterialObject.bHaveRougnessMap = 1.0;
-	if (bHaveMetallicMap) cbMaterialObject.bHaveMetallicMap = 1.0;
+	//if (bHaveDiffuseTexture) cbMaterialObject.bHaveDiffuseTexture = 1.0;
+	//if (bHaveNormalTexture) cbMaterialObject.bHaveNormalMap = 1.0;
+	//if (bHaveRougnessTexture) cbMaterialObject.bHaveRougnessMap = 1.0;
+	//if (bHaveMetallicMap) cbMaterialObject.bHaveMetallicMap = 1.0;
 	//cbMaterialObject.bHaveGlossMap = 0;
 
-	cbMaterialObject.mRougness = m_Roughness;
-	cbMaterialObject.mGlossiness = m_Glossiness;
+	//cbMaterialObject.mRougness = m_Roughness;
+	//cbMaterialObject.mGlossiness = m_Glossiness;
 	
-	m_DeviceContext->PSSetShaderResources(0, 1, &DiffuseTextureRV);
-	m_DeviceContext->PSSetShaderResources(1, 1, &NormalTextureRV);
-	m_DeviceContext->PSSetShaderResources(4, 1, &RougnessTextureRV);
-	m_DeviceContext->PSSetShaderResources(5, 1, &MetallicTextureRV);
-	m_DeviceContext->UpdateSubresource(m_MaterialConstantBuffer, 0, 0, &cbMaterialObject, 0, 0);
-	m_DeviceContext->PSSetConstantBuffers(2, 1, &m_MaterialConstantBuffer);
-	SetAnistopicFiltering();
+	DiffuseTexture->Render();
+	NormalTexture->Render();
+	RougnessTexture->Render();
+	MetallicTexture->Render();
+	//m_DeviceContext->UpdateSubresource(m_MaterialConstantBuffer, 0, 0, &cbMaterialObject, 0, 0);
+	//m_DeviceContext->PSSetConstantBuffers(2, 1, &m_MaterialConstantBuffer);
+	//SetAnistopicFiltering();
 }
 
 void RedSt4R::Graphics::Material::ClearMaterial()
@@ -125,5 +143,5 @@ void RedSt4R::Graphics::Material::CreateBuffers()
 
 RedSt4R::Graphics::Material::~Material()
 {
-
+	delete DiffuseTexture;
 }

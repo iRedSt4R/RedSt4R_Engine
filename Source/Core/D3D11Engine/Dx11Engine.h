@@ -10,8 +10,7 @@
 #include "../../Debug/DebugMacros.h"
 #include "../../Graphics/Shaders/Shader.h"
 #include "../../Graphics/Camera/FirstPersonCamera.h"
-//#include "../../GUI/GuiManager.h"
-//#include "../../Graphics/Lights/CubeMap.h"
+#include "../EngineResources.h"
 
 using namespace DirectX;
 using namespace RedSt4R;
@@ -86,6 +85,14 @@ namespace RedSt4R
 		inline ID3D11Texture2D* GetTexture2DForPostProcess() { return renderTargetTextureMap; }
 		inline ID3D11RenderTargetView* GetRTVForPostProcess() { return renderTargetViewMap; }
 		inline ID3D11ShaderResourceView* GetSRV2DForPostProcess() { return shaderResourceViewMap; }
+		inline EngineResources* GetEngineResource() 
+		{ 
+			EngineResources* eg = new EngineResources;
+			eg->SetDevice(m_Device);
+			eg->SetDeviceContext(m_DeviceContext);
+
+			return eg;
+		}
 
 		//inline CubeMap* GetCubeMap() { return m_CubeMap; }
 		//inline XMMATRIX GetCameraView() const { return mCameraView; }

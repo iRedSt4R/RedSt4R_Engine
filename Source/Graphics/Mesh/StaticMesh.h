@@ -13,6 +13,8 @@
 #include "../Material/RS_Material_Desc.h"
 #include "../Mesh/StaticMesh.h"
 #include "../../GUI/GuiManager.h"
+#include "RSMODEL_DESC.h"
+#include <fstream>
 
 using namespace DirectX;
 using namespace RedSt4R;
@@ -128,7 +130,7 @@ namespace RedSt4R
 			~StaticMesh();
 
 			void LoadMeshFromFile(char *filePath);
-			void LoadMeshFromFileWithIndex(const aiScene *a_aScene, char *filePath, int index, std::string FolderName);
+			void LoadMeshFromFileWithIndex(const aiScene *a_aScene, char *filePath, int index, std::string FolderName, RSMODEL_DESC* a_modelDesc);
 			void AssignMaterial(Material *a_Material);
 			void CreateAABB();
 			void Draw();
@@ -146,6 +148,7 @@ namespace RedSt4R
 			void CheckIfCulled();
 			void InitBuffers();
 			void UpdateMeshBuffers();
+			void LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc);
 
 		};
 	}

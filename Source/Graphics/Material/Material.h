@@ -8,6 +8,7 @@
 #include "RS_Material_Desc.h"
 #include "../Shaders/Shader.h"
 #include "WICTextureLoader.h"
+#include "../../API/Texture.h"
 
 struct cbMaterial
 {
@@ -20,6 +21,9 @@ struct cbMaterial
 	float mGlossiness;
 	float p0;
 };
+
+//Forward declaration to avoid errors
+namespace RedSt4R{namespace API{class Texture; } }
 
 namespace RedSt4R
 {
@@ -46,10 +50,15 @@ namespace RedSt4R
 			float m_Roughness;
 			float m_Glossiness;
 			//----------Material Textures-------------//
-			ID3D11ShaderResourceView *DiffuseTextureRV;
-			ID3D11ShaderResourceView *NormalTextureRV;
-			ID3D11ShaderResourceView *RougnessTextureRV;
-			ID3D11ShaderResourceView *MetallicTextureRV;
+			//ID3D11ShaderResourceView *DiffuseTextureRV;
+			RedSt4R::API::Texture* DiffuseTexture;
+			RedSt4R::API::Texture* NormalTexture;
+			RedSt4R::API::Texture* RougnessTexture;
+			RedSt4R::API::Texture* MetallicTexture;
+
+			//ID3D11ShaderResourceView *NormalTextureRV;
+			//ID3D11ShaderResourceView *RougnessTextureRV;
+			//ID3D11ShaderResourceView *MetallicTextureRV;
 
 			ID3D11SamplerState *FilteringState;
 

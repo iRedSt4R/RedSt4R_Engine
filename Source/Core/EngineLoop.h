@@ -3,10 +3,11 @@
 #include "../Graphics/Lights/DireLight.h"
 #include "../Graphics/Lights/CubeMap.h"
 #include "../Graphics/Mesh/ComplexMesh.h"
-#include "../GUI/GuiManager.h"
 #include "../Graphics/Mesh/Mesh_Manager.h"
 #include "../Core/D3D11Engine/Dx11Engine.h"
 #include "../Core/D3D12Engine/Dx12Engine.h"
+#include "../GUI/GuiManager.h"
+#include "EngineResources.h"
 
 namespace RedSt4R
 {
@@ -22,6 +23,7 @@ namespace RedSt4R
 		CubeMap *CubeTest;
 		GuiManager *gui;
 		MeshManager *meshManager;
+		EngineResources *engineResources;
 
 		RedSt4R::Dx11Engine *dx11Engine;
 		EngineLoop(HWND a_hwnd);

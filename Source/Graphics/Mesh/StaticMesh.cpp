@@ -109,8 +109,10 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFile(char *filePath)
 	CreateAABB();
 }
 
-void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_aScene, char * filePath, int index, std::string FolderName)
+void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_aScene, char * filePath, int index, std::string FolderName, RSMODEL_DESC* a_modelDesc)
 {
+	
+
 	const aiScene *aScene = a_aScene;
 
 	RS_WARNING("Number Meshes:" << aScene->mNumMeshes)
@@ -195,11 +197,12 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 
 				VertexVec.push_back(tempVertexT);
 			}
+			//std::string finalPath = a_modelDesc->textureFolder;
 
-	matDesc.diffuseTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Specular.jpg";
-	matDesc.normalTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Normals.jpg";
-	matDesc.rougnessTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Gloss.jpg";
-	//matDesc.metallicTextureDir = L"Assets/Stylized_PBR_Dagger_by_Stephen_Stone/Textures/Dagger_Albedo.jpg";
+			matDesc.diffuseTextureDir = GetWC(&a_modelDesc->diffuseTexName[0]);
+			matDesc.normalTextureDir = GetWC(&a_modelDesc->normalTexName[0]);
+			matDesc.rougnessTextureDir = GetWC(&a_modelDesc->roughnessTexName[0]);
+			matDesc.metallicTextureDir = GetWC(&a_modelDesc->metalnessTexName[0]);
 	InitBuffers();
 
 
@@ -347,6 +350,41 @@ void RedSt4R::Graphics::StaticMesh::UpdateMeshBuffers()
 
 	m_DeviceContext->UpdateSubresource(m_MeshConsantBuffer, 0, 0, &m_MeshConstantBufferObject, 0, 0);
 	m_DeviceContext->VSSetConstantBuffers(0, 1, &m_MeshConsantBuffer);
+}
+
+void RedSt4R::Graphics::StaticMesh::LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc)
+{
+	int counter = 0;
+	std::ifstream fin;
+	fin.open("Assets/TestModel.rsmodel");
+
+	if (fin.fail())
+	{
+		std::cout << "Could not open file from desired path!" << std::endl;
+	}
+	else
+	{
+		std::cout << "File Opened!" << std::endl;
+	}
+	while (!fin.eof())
+	{
+		if (counter = 1) fin >> a_ModelDesc->fileName;
+		if (counter = 2) fin >> a_ModelDesc->textureFolder;
+		if (counter = 3) fin >> a_ModelDesc->diffuseTexName;
+		if (counter = 4) fin >> a_ModelDesc->normalTexName;
+		if (counter = 5) fin >> a_ModelDesc->roughnessTexName;
+		if (counter = 6) fin >> a_ModelDesc->metalnessTexName;
+		//counter++;
+	}
+
+	std::cout << a_ModelDesc->fileName << std::endl;
+	std::cout << a_ModelDesc->textureFolder << std::endl;
+	std::cout << a_ModelDesc->diffuseTexName << std::endl;
+	std::cout << a_ModelDesc->normalTexName << std::endl;
+	std::cout << a_ModelDesc->roughnessTexName << std::endl;
+	std::cout << a_ModelDesc->metalnessTexName << std::endl;
+
+	fin.close();
 }
 
 void RedSt4R::Graphics::StaticMesh::InitDebugAABB()
