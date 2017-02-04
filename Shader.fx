@@ -160,6 +160,7 @@ cbuffer DirLight : register(b1)
 	float4 Lightdiffuse;
 };
 
+/*
 cbuffer Material : register(b2)
 {
 	float bHaveDiffuseTexture;
@@ -172,6 +173,7 @@ cbuffer Material : register(b2)
 	float p0;
 };
 
+*/
 //-------------------- HELPER FUNCTIONS -----------------------//
 
 /*
@@ -196,16 +198,16 @@ float3 GammaCorrectTextureRGB(Texture2D t, SamplerState s, float2 uv)
 //------------------- GETTERS FUNCTIONS --------------------//
 float4 GetAlbedo(float2 a_TexCoord)
 {
-	if (bHaveDiffuseTexture == 1.0)
-	{
+	//if (bHaveDiffuseTexture == 1.0)
+	//{
 		return ObjTexture.Sample(ObjSamplerState, a_TexCoord);
 		//return ObjTexture.SampleLevel(g_samPoint, a_TexCoord, 0);
-	}
-	else
-	{
-		return float4(0.662745, 0.662745, 0.662745, 1.0);
+	//}
+	//else
+	//{
+	//	return float4(0.662745, 0.662745, 0.662745, 1.0);
 		//return float4(1, 0.843137, 0, 1.0);
-	}
+	//}
 }
 float GetRoughness(float2 a_TexCoord)
 {
@@ -313,7 +315,7 @@ float3 GGX(float3 N, float3 V, float3 L, float roughness, float3 specular)
 float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float pRoughness)
 {
 	float3 base_color = cAlbedo;
-	base_color = pow(base_color, 1 / 2.5f);
+	//base_color = pow(base_color, 1 / 2.5f);
 	float metallic = pMetallic;
 	//metallic = pow(metallic, 1 / 1.3f);
 	float roughness = pRoughness;
@@ -403,8 +405,10 @@ float4 PSMain(VOut input) : SV_TARGET
 	float4 diffuse = GetAlbedo(input.TexCoord);
 	
 	//float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
-	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, mRoughness, 1 - GetRoughness(input.TexCoord));
-	finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
+	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
+	
+	finalColor = pow(finalColor, 1/2.2);
+	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
 	//finalColor.rgb *= 1.2f;
 
 	//------------- GREY SCALE ------------//
