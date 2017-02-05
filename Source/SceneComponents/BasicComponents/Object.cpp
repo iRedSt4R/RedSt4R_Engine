@@ -100,6 +100,13 @@ void RedSt4R::Object::SetObjectScale(XMFLOAT3 scale)
 	vScale = scale;
 }
 
+void RedSt4R::Object::Scale(float scaleFactor)
+{
+	vScale.x *= scaleFactor;
+	vScale.y *= scaleFactor;
+	vScale.z *= scaleFactor;
+}
+
 void RedSt4R::Object::RotateX(float angle)
 {
 	vRotation.x += angle;
@@ -113,4 +120,13 @@ void RedSt4R::Object::RotateY(float angle)
 void RedSt4R::Object::RotateZ(float angle)
 {
 	vRotation.z += angle;
+}
+
+void RedSt4R::Object::Transform(float x, float y, float z)
+{
+	XMFLOAT3 vecToAdd = XMFLOAT3(x, y, z);
+
+	vPosition.x = vPosition.x + vecToAdd.x;
+	vPosition.y = vPosition.y + vecToAdd.y;
+	vPosition.z = vPosition.z + vecToAdd.z;
 }

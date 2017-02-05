@@ -16,9 +16,13 @@ namespace RedSt4R
 
 		virtual void SetObjectPosition(XMFLOAT3 position) override;
 		virtual void SetObjectScale(XMFLOAT3 scale) override;
+		virtual void Scale(float scaleFactor) override;
+
 		virtual void RotateX(float angle) override;
 		virtual void RotateY(float angle) override;
 		virtual void RotateZ(float angle) override;
+
+		virtual void Transform(float x, float y, float z) override;
 
 		virtual XMFLOAT3 GetObjectPosition() override;
 		virtual float GetObjectPositionX() override;

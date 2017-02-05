@@ -31,9 +31,13 @@ namespace RedSt4R
 
 		virtual void SetObjectPosition(XMFLOAT3 position) = 0;
 		virtual void SetObjectScale(XMFLOAT3 scale) = 0;
+		virtual void Scale(float scaleFactor) = 0;
+
 		virtual void RotateX(float angle) = 0;
 		virtual void RotateY(float angle) = 0;
 		virtual void RotateZ(float angle) = 0;
+
+		virtual void Transform(float x, float y, float z) = 0;
 
 
 
