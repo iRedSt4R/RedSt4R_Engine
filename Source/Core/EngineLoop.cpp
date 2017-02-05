@@ -47,7 +47,7 @@ void RedSt4R::EngineLoop::Begin()
 	//gui->PrepareGui();
 	//gui->SetupImGuiStyle(true, 0.8f);
 
-	meshManager->AddWithOffset("Assets/Pbr.rsmodel", 0);
+	meshManager->AddWithOffset("Assets/TestModel.rsmodel", 0);
 
 
 

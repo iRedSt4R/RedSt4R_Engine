@@ -315,7 +315,7 @@ float3 GGX(float3 N, float3 V, float3 L, float roughness, float3 specular)
 float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float pRoughness)
 {
 	float3 base_color = cAlbedo;
-	//base_color = pow(base_color, 1 / 2.5f);
+	base_color = pow(base_color, 1 / 2.2f);
 	float metallic = pMetallic;
 	//metallic = pow(metallic, 1 / 1.3f);
 	float roughness = pRoughness;
@@ -331,7 +331,16 @@ float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float
 
 	float3 diffuse_color = base_color * (1 - metallic);
 	float3 diffuse_brdf = diffuse_color;
-	diffuse_brdf *= dot_n_l * Disney(N, V, L, alpha);
+	diffuse_brdf *= saturate(dot_n_l * Disney(N, V, L, alpha));
+	diffuse_brdf += float3(0.4f, 0.4f, 0.4f) * base_color;
+
+	//if (dot_n_l == 0)
+	//{
+	//	diffuse_brdf = float
+	//}
+
+	//diffuse_brdf += 0.5f;
+	//diffuse_brdf = saturate(diffuse_brdf);
 
 	//Reflections
 	float3 reflectionVector = normalize(reflect(-V, N));
@@ -346,9 +355,8 @@ float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float
 	
 	float specPow = pow((1 - roughness), 4);
 	float3 specular_brdf = GGX(N, V, L, roughness, float3(specPow, specPow, specPow));
-	
-	float3 final_brdf = (diffuse_brdf + specular_brdf);
 
+	float3 final_brdf = (diffuse_brdf + specular_brdf);
 	return final_brdf;
 	}
 
@@ -405,9 +413,10 @@ float4 PSMain(VOut input) : SV_TARGET
 	float4 diffuse = GetAlbedo(input.TexCoord);
 	
 	//float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
-	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
+	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), 1 - GetRoughness(input.TexCoord));
 	
-	finalColor = pow(finalColor, 1/2.2);
+	finalColor = pow(finalColor, 1/1.5);
+	finalColor = ((finalColor.rgb - 0.5f) * max(1.1f, 0)) + 0.5f;
 	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
 	//finalColor.rgb *= 1.2f;
 
