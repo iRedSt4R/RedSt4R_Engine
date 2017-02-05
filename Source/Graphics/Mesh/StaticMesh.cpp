@@ -326,8 +326,6 @@ void RedSt4R::Graphics::StaticMesh::UpdateMeshBuffers()
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_MeshVertexBuffer, &stride, &offset);
 
 	mPosition = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
-	//XMVECTOR rotationDir = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	//mRotation = XMMatrixRotationAxis(rotationDir, vRotation.x);
 	mRotationX = XMMatrixRotationX(vRotation.x);
 	mRotationY = XMMatrixRotationY(vRotation.y);
 	mRotationZ = XMMatrixRotationZ(vRotation.z);
@@ -515,10 +513,10 @@ void RedSt4R::Graphics::StaticMesh::RotateX(float angle)
 	vRotation.x += angle;
 }
 
-void RedSt4R::Graphics::StaticMesh::RotateY(float angle)
-{
-	vRotation.y += angle;
-}
+//void RedSt4R::Graphics::StaticMesh::RotateY(float angle)
+//{
+//	vRotation.y += angle;
+//}
 
 void RedSt4R::Graphics::StaticMesh::RotateZ(float angle)
 {
@@ -533,6 +531,24 @@ void RedSt4R::Graphics::StaticMesh::Scale(float scaleFactor)
 
 	//AABBVector[0] *= scaleFactor;
 	//AABBVector[1] *= scaleFactor;
+}
+
+
+void RedSt4R::Graphics::StaticMesh::Begin()
+{
+	
+}
+
+
+void RedSt4R::Graphics::StaticMesh::Render()
+{
+	
+}
+
+
+void RedSt4R::Graphics::StaticMesh::End()
+{
+
 }
 
 RedSt4R::Graphics::StaticMesh::~StaticMesh()

@@ -75,6 +75,21 @@ void RedSt4R::Object::End()
 	
 }
 
+void RedSt4R::Object::BuildMatrices()
+{
+	mPosition = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
+	mRotationX = XMMatrixRotationX(vRotation.x);
+	mRotationY = XMMatrixRotationY(vRotation.y);
+	mRotationZ = XMMatrixRotationZ(vRotation.z);
+
+	mRotation = mRotationX * mRotationY * mRotationZ;
+
+	mScale = XMMatrixScaling(vScale.x, vScale.y, vScale.z);
+
+	mWorld = XMMatrixIdentity();
+	mWorld = mPosition * mRotation * mScale;
+}
+
 void RedSt4R::Object::SetObjectPosition(XMFLOAT3 position)
 {
 	vPosition = position;

@@ -15,6 +15,7 @@
 #include "../../GUI/GuiManager.h"
 #include "RSMODEL_DESC.h"
 #include <fstream>
+#include "../../SceneComponents/BasicComponents/Object.h"
 
 using namespace DirectX;
 using namespace RedSt4R;
@@ -58,7 +59,7 @@ namespace RedSt4R
 {
 	namespace Graphics
 	{
-		class StaticMesh
+		class StaticMesh : public Object
 		{
 		private:
 			//---------------------Mesh Data-----------------//
@@ -74,19 +75,6 @@ namespace RedSt4R
 			std::vector <aiVector3D> NormalsVec;
 			std::vector <aiVector3D> TangentsVec;
 			cbPerObject m_MeshConstantBufferObject;
-			//--------------------Mesh World----------------//
-			XMFLOAT3 vPosition;
-			XMFLOAT3 vRotation;
-			XMFLOAT3 vScale;
-			//------------------Mesh Matrices------------------//
-			XMMATRIX mPosition;
-			XMMATRIX mRotation;
-			XMMATRIX mRotationX;
-			XMMATRIX mRotationY;
-			XMMATRIX mRotationZ;
-			XMMATRIX mScale;
-			XMMATRIX mWorld;
-			XMMATRIX mWVP;
 
 			//-------------Complete Vertex Vector---------------//
 			std::vector <VertexB> VertexVec;
@@ -136,11 +124,20 @@ namespace RedSt4R
 			void Draw();
 			void Translate(float x, float y, float z);
 			void RotateX(float angle);
-			void RotateY(float angle);
+			//void RotateY(float angle);
 			void RotateZ(float angle);
 			void Scale(float scaleFactor);
 
 			inline RS_Material_Desc* GetMaterialInfo() { return &matDesc; }
+
+
+			virtual void Begin() override;
+
+
+			virtual void Render() override;
+
+
+			virtual void End() override;
 
 		private:
 			void InitDebugAABB();

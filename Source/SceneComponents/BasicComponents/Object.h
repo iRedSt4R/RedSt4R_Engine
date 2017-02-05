@@ -4,13 +4,15 @@
 
 namespace RedSt4R
 {
-	class Object : IObject
+	class Object : public IObject
 	{
 
 	public:
 		virtual void Begin() override;
 		virtual void Render() override;
 		virtual void End() override;
+
+		virtual void BuildMatrices() override;
 
 		virtual void SetObjectPosition(XMFLOAT3 position) override;
 		virtual void SetObjectScale(XMFLOAT3 scale) override;

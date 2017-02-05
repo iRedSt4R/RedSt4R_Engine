@@ -77,8 +77,8 @@ void RedSt4R::Graphics::ComplexMesh::Draw()
 
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
-		vMaterials[i]->SetRoughness(GUI->g_RoughnessValue);
-		vMaterials[i]->SetGlossiness(GUI->g_GlossinessValue);
+		//vMaterials[i]->SetRoughness(GUI->g_RoughnessValue);
+		//vMaterials[i]->SetGlossiness(GUI->g_GlossinessValue);
 		vMeshes[i]->Draw();
 	}
 }
