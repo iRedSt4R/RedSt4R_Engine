@@ -23,6 +23,19 @@ namespace RedSt4R
 		XMMATRIX mWVP;
 
 	public:
+		virtual void Begin() = 0;
+		virtual void Render() = 0;
+		virtual void End() = 0;
+
+		virtual void SetObjectPosition(XMFLOAT3 position) = 0;
+		virtual void SetObjectScale(XMFLOAT3 scale) = 0;
+		virtual void RotateX(float angle) = 0;
+		virtual void RotateY(float angle) = 0;
+		virtual void RotateZ(float angle) = 0;
+
+
+
+		//Getters
 		virtual XMFLOAT3 GetObjectPosition() = 0;
 		virtual float GetObjectPositionX() = 0;
 		virtual float GetObjectPositionY() = 0;

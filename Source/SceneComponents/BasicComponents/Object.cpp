@@ -59,3 +59,43 @@ float RedSt4R::Object::GetObjectScaleZ()
 {
 	return vScale.z;
 }
+
+void RedSt4R::Object::Begin()
+{
+	
+}
+
+void RedSt4R::Object::Render()
+{
+	
+}
+
+void RedSt4R::Object::End()
+{
+	
+}
+
+void RedSt4R::Object::SetObjectPosition(XMFLOAT3 position)
+{
+	vPosition = position;
+}
+
+void RedSt4R::Object::SetObjectScale(XMFLOAT3 scale)
+{
+	vScale = scale;
+}
+
+void RedSt4R::Object::RotateX(float angle)
+{
+	vRotation.x += angle;
+}
+
+void RedSt4R::Object::RotateY(float angle)
+{
+	vRotation.y += angle;
+}
+
+void RedSt4R::Object::RotateZ(float angle)
+{
+	vRotation.z += angle;
+}
