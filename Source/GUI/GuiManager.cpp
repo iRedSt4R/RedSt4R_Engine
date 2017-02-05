@@ -2,48 +2,46 @@
 
 std::vector <std::string> strFilesVec;
 std::vector<char*>  charFilesVec;
+char buf[256];
 bool test;
 
 
-/*
-// char *convert(const std::string & s)
-// {
-// 	char *pc = new char[s.size() + 1];
-// 	std::strcpy(pc, s.c_str());
-// 	return pc;
-// }
-// 
-// void LOL()
-// {
-// 
-// 	DIR *dir;
-// 	struct dirent *ent;
-// 	if ((dir = opendir("D:/DragonerDx11 - Copy/Models")) != NULL)
-// 	{
-// 		while ((ent = readdir(dir)) != NULL)
-// 		{
-// 			std::string tempstr;
-// 			tempstr = ent->d_name;
-// 			strFilesVec.push_back(tempstr);
-// 		}
-// 		
-// 	}
-// 	else
-// 	{
-// 		/ * could not open directory * /
-// 		perror("");
-// 	}
-// 	closedir(dir);
-// 
-// 
-// 	std::transform(strFilesVec.begin(), strFilesVec.end(), std::back_inserter(charFilesVec), convert);
-// 
-// 	for (int i = 0; i < strFilesVec.size(); i++)
-// 	{
-// 		std::cout<< charFilesVec[i]<<std::endl;
-// 	}
-// }
-*/
+ char* convert(const std::string & s)
+ {
+ 	char *pc = new char[s.size() + 1];
+ 	std::strcpy(pc, s.c_str());
+ 	return pc;
+ }
+ 
+ void LOL()
+ { 
+ 	DIR *dir;
+ 	struct dirent *ent;
+ 	if ((dir = opendir("C:/Users/Dragoner/Documents/Visual Studio 2015/Projects/RedSt4R_Engine/Assets")) != NULL)
+ 	{
+ 		while ((ent = readdir(dir)) != NULL)
+ 		{
+ 			std::string tempstr;
+ 			tempstr = ent->d_name;
+			strFilesVec.push_back(tempstr);
+ 		}
+ 		
+ 	}
+ 	else
+ 	{
+
+	}
+ 	closedir(dir);
+ 
+ 
+ 	std::transform(strFilesVec.begin(), strFilesVec.end(), std::back_inserter(charFilesVec), convert);
+ 
+ 	for (int i = 0; i < strFilesVec.size(); i++)
+ 	{
+ 		std::cout<< charFilesVec[i]<<std::endl;
+	}
+ }
+
 
 int myChoice;
 
@@ -69,6 +67,7 @@ GuiManager::GuiManager(EngineResources *a_EngineResources)
 void GuiManager::SetInputToImGui()
 {
 	ImGuiIO& io = ImGui::GetIO();
+	SDL_Event sdl_Event;
 
 	int x, y;
 	SDL_GetMouseState(&x, &y);
@@ -81,18 +80,34 @@ void GuiManager::SetInputToImGui()
 	else
 		io.MouseDown[0] = false;
 
+	while (SDL_PollEvent(&sdl_Event))
+		switch (sdl_Event.type)
+		{
+			case SDL_KEYUP:
+			{
+				int key = sdl_Event.key.keysym.sym & ~SDLK_SCANCODE_MASK;
+				io.KeysDown[key] = (sdl_Event.type == SDL_KEYDOWN);
+				io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
+				io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
+				io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
+				io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
+			}
+		}
+	//Input
+
 }
 
 void GuiManager::PrepareGui()
 {
 	ImGui_ImplDX11_Init(GetActiveWindow(), m_Device, m_DeviceContext);
+	LOL();
 }
 
 
 void GuiManager::UpdateGui()
 {
-	ImGui_ImplDX11_NewFrame();
 	SetInputToImGui();
+	ImGui_ImplDX11_NewFrame();
 
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
@@ -135,9 +150,13 @@ void GuiManager::UpdateGui()
 	ImGui::SliderFloat("", &g_RoughnessValue, 0.0f, 1.0f, "Rougness = %.3f");
 	ImGui::SliderFloat("", &g_GlossinessValue, 0.0f, 1.0f, "Glossiness = %.3f");
 	ImGui::Separator();
-	
-
-
+	ImGui::Combo("", &myChoice, (const char**)&charFilesVec[0], charFilesVec.size(), -1);
+	if (ImGui::Button("Load Model"))
+	{
+		
+	}
+	ImGui::Separator();
+	ImGui::InputText("String", buf, 256);
 	ImGui::End();
 	//--------Left Page End------------//
 

@@ -39,7 +39,7 @@ void RedSt4R::Graphics::ComplexMesh::LoadMeshFromFile(char* MeshDir, std::string
 	}
 	RS_LOG("Total Vertices: "<<TotalVertices)
 
-	this->Scale(35);
+	this->Scale(15);
 }
 
 void RedSt4R::Graphics::ComplexMesh::Update()

@@ -3,6 +3,30 @@
 #include <SDL.h>
 
 RedSt4R::EngineLoop *engineLoop;
+bool ImGui_ImplSdlGL3_ProcessEvent(SDL_Event* event)
+{
+	ImGuiIO& io = ImGui::GetIO();
+	switch (event->type)
+	{
+	case SDL_TEXTINPUT:
+	{
+		io.AddInputCharactersUTF8(event->text.text);
+		return true;
+	}
+	case SDL_KEYDOWN:
+	case SDL_KEYUP:
+	{
+		int key = event->key.keysym.sym & ~SDLK_SCANCODE_MASK;
+		io.KeysDown[key] = (event->type == SDL_KEYDOWN);
+		io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
+		io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
+		io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
+		io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
+		return true;
+	}
+	}
+	return false;
+}
 
 
 int main(int argc, char* argv[])
@@ -27,6 +51,7 @@ int main(int argc, char* argv[])
 			engineLoop->dx11Engine->FPSCamera->dy = 0;
 			while (SDL_PollEvent(&SDL_Event))
 			{
+			ImGui_ImplSdlGL3_ProcessEvent(&SDL_Event);
 				switch (SDL_Event.type)
 				{
 				case SDL_KEYDOWN:
@@ -34,7 +59,7 @@ int main(int argc, char* argv[])
 					{
 						SDL_Quit();
 						bRunning = false;
-					}		
+					}
 				case SDL_WINDOWEVENT:
 					if (SDL_Event.window.event == SDL_WINDOWEVENT_CLOSE)
 					{

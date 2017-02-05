@@ -7,11 +7,12 @@
 #include <SDL.h>
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
+#include "DirReader.h"
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <iterator>
-
+#include <sys/types.h>
 using namespace RedSt4R;
 
 class GuiManager

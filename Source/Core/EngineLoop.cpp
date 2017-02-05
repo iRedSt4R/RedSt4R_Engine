@@ -43,11 +43,7 @@ void RedSt4R::EngineLoop::Begin()
 	CubeTest = new CubeMap(dx11Engine, L"Assets/OutputCube2.dds");
 
 
-
-	//gui->PrepareGui();
-	//gui->SetupImGuiStyle(true, 0.8f);
-
-	meshManager->AddWithOffset("Assets/TestModel.rsmodel", 0);
+	meshManager->AddWithOffset("Assets/Pbr.rsmodel", 0);
 
 
 

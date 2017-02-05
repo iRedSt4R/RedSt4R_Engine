@@ -1,123 +1,9 @@
 #define GAMMA 2.2f
 #define PI 3.14159f
-/*
-float LightingFuncGGX_D(float dotNH, float roughness)
-{
-	float alpha = roughness*roughness;
-	float alphaSqr = alpha*alpha;
-	float pi = 3.14159f;
-	float denom = dotNH * dotNH *(alphaSqr - 1.0) + 1.0f;
 
-	float D = alphaSqr / (pi * denom * denom);
-	return D;
-}
-
-float2 LightingFuncGGX_FV(float dotLH, float roughness)
-{
-	float alpha = roughness*roughness;
-
-	// F
-	float F_a, F_b;
-	float dotLH5 = pow(1.0f - dotLH, 5);
-	F_a = 1.0f;
-	F_b = dotLH5;
-
-	// V
-	float vis;
-	float k = alpha / 2.0f;
-	float k2 = k*k;
-	float invK2 = 1.0f - k2;
-	vis = rcp(dotLH*dotLH*invK2 + k2);
-
-	return float2(F_a*vis, F_b*vis);
-}
-
-float LightingFuncGGX_OPT3(float3 N, float3 V, float3 L, float roughness, float F0)
-{
-	float3 H = normalize(V + L);
-
-	float dotNL = saturate(dot(N, L));
-	float dotLH = saturate(dot(L, H));
-	float dotNH = saturate(dot(N, H));
-
-	float D = LightingFuncGGX_D(dotNH, roughness);
-	float2 FV_helper = LightingFuncGGX_FV(dotLH, roughness);
-	float FV = F0*FV_helper.x + (1.0f - F0)*FV_helper.y;
-	float specular = dotNL * D * FV;
-
-	return specular;
-}
-
-float LightingFuncGGX_OPT2(float3 N, float3 V, float3 L, float roughness, float F0)
-{
-	float alpha = roughness*roughness;
-
-	float3 H = normalize(V + L);
-
-	float dotNL = saturate(dot(N, L));
-
-	float dotLH = saturate(dot(L, H));
-	float dotNH = saturate(dot(N, H));
-	
-
-	float F, D, vis;
-
-	// D
-	float alphaSqr = alpha*alpha;
-	float pi = 3.14159f;
-	float denom = dotNH * dotNH *(alphaSqr - 1.0) + 1.0f;
-	D = alphaSqr / (pi * denom * denom);
-
-	// F
-	float dotLH5 = pow(1.0f - dotLH, 5);
-	F = F0 + (1.0 - F0)*(dotLH5);
-
-	// V
-	float k = alpha / 2.0f;
-	float k2 = k*k;
-	float invK2 = 1.0f - k2;
-	vis = rcp(dotLH*dotLH*invK2 + k2);
-
-	float specular = dotNL * D * F * vis;
-	return specular;
-}
-
-float G1V(float dotNV, float k)
-{
-	return 1.0f / (dotNV*(1.0f - k) + k);
-}
-
-float LightingFuncGGX_REF(float3 N, float3 V, float3 L, float roughness, float F0)
-{
-	float alpha = roughness*roughness;
-
-	float3 H = normalize(V + L);
-
-	float dotNL = saturate(dot(N, L));
-	float dotNV = saturate(dot(N, V));
-	float dotNH = saturate(dot(N, H));
-	float dotLH = saturate(dot(L, H));
-
-	float F, D, vis;
-
-	// D
-	float alphaSqr = alpha*alpha;
-	float pi = 3.14159f;
-	float denom = dotNH * dotNH *(alphaSqr - 1.0) + 1.0f;
-	D = alphaSqr / (pi * denom * denom);
-
-	// F
-	float dotLH5 = pow(1.0f - dotLH, 5);
-	F = F0 + (1.0 - F0)*(dotLH5);
-
-	// V
-	float k = alpha / 2.0f;
-	vis = G1V(dotNL, k)*G1V(dotNV, k);
-
-	float specular = dotNL * D * F * vis;
-	return specular;
-}
-*/
+/* --- Settings --- */
+#define HDRPower 1.30  //[0.00 to 8.00] Strangely lowering this makes the image brighter
+#define radius2  0.87  //[0.00 to 8.00] Raising this seems to make the effect stronger and also brighter
 
 //-------------------------------------------------- FROSTBITE PBR [BRDF] ---------------------------------------------//
 struct VOut
@@ -160,6 +46,13 @@ cbuffer DirLight : register(b1)
 	float4 Lightdiffuse;
 };
 
+SamplerState AnisoClamp
+{
+	Filter = ANISOTROPIC;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
 /*
 cbuffer Material : register(b2)
 {
@@ -176,31 +69,23 @@ cbuffer Material : register(b2)
 */
 //-------------------- HELPER FUNCTIONS -----------------------//
 
-/*
-float3 FinalGamma(float3 color)
-{
-	return pow(color, 1.0f / GAMMA);
-}
-
 float4 GammaCorrectTexture(Texture2D t, SamplerState s, float2 uv)
 {
 	float4 samp = t.Sample(s, uv);
-	return float4(pow(samp.rgb, GAMMA), samp.a);
+	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
+	//float4 gct = float4(pow(samp.rgb, 2.2), samp.a);
+	//gct.rgb = (((gct.rgb - 0.5f) * max(1.4f, 0)) + 0.5f);
+	return samp;
 }
-
-float3 GammaCorrectTextureRGB(Texture2D t, SamplerState s, float2 uv)
-{
-	float4 samp = t.Sample(s, uv);
-	return float3(pow(samp.rgb, GAMMA));
-}
-*/
 
 //------------------- GETTERS FUNCTIONS --------------------//
 float4 GetAlbedo(float2 a_TexCoord)
 {
 	//if (bHaveDiffuseTexture == 1.0)
 	//{
-		return ObjTexture.Sample(ObjSamplerState, a_TexCoord);
+	return(ObjTexture.Sample(AnisoClamp, a_TexCoord));
+		//HDRPass(ObjTexture.Sample(ObjSamplerState, a_TexCoord)), a_TexCoord);
+
 		//return ObjTexture.SampleLevel(g_samPoint, a_TexCoord, 0);
 	//}
 	//else
@@ -213,7 +98,8 @@ float GetRoughness(float2 a_TexCoord)
 {
 	//if (bHaveRougnessMap == 1.0)
 	//{
-		return RoughnessTexture.Sample(ObjSamplerState, a_TexCoord);
+	//return GammaCorrectTexture(RoughnessTexture, ObjSamplerState, a_TexCoord);
+		return RoughnessTexture.Sample(AnisoClamp, a_TexCoord);
 	//}
 	//else
 	//{
@@ -224,7 +110,8 @@ float GetMetallness(float2 a_TexCoord)
 {
 	//if (bHaveRougnessMap == 1.0)
 	//{
-	return MetallicTexture.Sample(ObjSamplerState, a_TexCoord);
+	//return GammaCorrectTexture(MetallicTexture, ObjSamplerState, a_TexCoord);
+	return MetallicTexture.Sample(AnisoClamp, a_TexCoord);
 	//}
 	//else
 	//{
@@ -315,11 +202,8 @@ float3 GGX(float3 N, float3 V, float3 L, float roughness, float3 specular)
 float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float pRoughness)
 {
 	float3 base_color = cAlbedo;
-	base_color = pow(base_color, 1 / 2.2f);
 	float metallic = pMetallic;
-	//metallic = pow(metallic, 1 / 1.3f);
 	float roughness = pRoughness;
-	//roughness = pow(roughness, 1 / 1.3f);
 
 	float3  H = normalize(L + V);
 	float dot_n_l = dot(N, L);
@@ -332,15 +216,6 @@ float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float
 	float3 diffuse_color = base_color * (1 - metallic);
 	float3 diffuse_brdf = diffuse_color;
 	diffuse_brdf *= saturate(dot_n_l * Disney(N, V, L, alpha));
-	diffuse_brdf += float3(0.4f, 0.4f, 0.4f) * base_color;
-
-	//if (dot_n_l == 0)
-	//{
-	//	diffuse_brdf = float
-	//}
-
-	//diffuse_brdf += 0.5f;
-	//diffuse_brdf = saturate(diffuse_brdf);
 
 	//Reflections
 	float3 reflectionVector = normalize(reflect(-V, N));
@@ -383,8 +258,6 @@ VOut VSMain(float4 inPos : POSITION, float2 inTexCoord : TEXCOORD, float3 inNorm
 	return output;
 }
 
-
-
 //----------------------------------------------------- PIXEL SHADER-------------------------------------------//
 float4 PSMain(VOut input) : SV_TARGET
 {
@@ -393,7 +266,7 @@ float4 PSMain(VOut input) : SV_TARGET
 	float3 Tangent = normalize(input.Tangent);
 	Tangent = normalize(Tangent - dot(Tangent, input.TexCoord) * Normal);
 	float3 Binormal = cross(Tangent, Normal);
-	float3 BumpMapNormal = NormalTexture.Sample(ObjSamplerState, input.TexCoord);
+	float3 BumpMapNormal = NormalTexture.Sample(AnisoClamp, input.TexCoord);
 	BumpMapNormal = (2.0f * BumpMapNormal) - 1.0f;
 	float3 NewNormal;
 	float3x3 TBN = float3x3(Tangent, Binormal, Normal);
@@ -401,29 +274,18 @@ float4 PSMain(VOut input) : SV_TARGET
 	NewNormal = normalize(NewNormal);
 
 
-	///if (bHaveNormalMap == 1.0)
-	//{
-		input.Normal = NewNormal;
-	//}
-	//else
-	//{
-		//input.Normal = normalize(input.Normal);
-	//}
+	input.Normal = NewNormal;
+
 
 	float4 diffuse = GetAlbedo(input.TexCoord);
 	
-	//float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
-	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), 1 - GetRoughness(input.TexCoord));
+	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
 	
-	finalColor = pow(finalColor, 1/1.5);
-	finalColor = ((finalColor.rgb - 0.5f) * max(1.1f, 0)) + 0.5f;
-	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
-	//finalColor.rgb *= 1.2f;
-
+	finalColor = saturate(pow(finalColor, 1/1.2));
+	finalColor = saturate(finalColor * 1.3f);
 	//------------- GREY SCALE ------------//
 	//float grayscale = dot(finalColor.rgb, float3(0.3, 0.59, 0.11));
 	//finalColor.rgb = grayscale;
-
 
 	return float4(finalColor, 1.0f);
 }

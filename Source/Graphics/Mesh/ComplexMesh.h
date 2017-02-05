@@ -21,9 +21,11 @@ namespace RedSt4R
 			ID3D11DeviceContext *m_DeviceContext;
 			const UINT8 *state = SDL_GetKeyboardState(NULL);
 
+		public:
 			std::vector <StaticMesh*> vMeshes;
 			std::vector <Material*> vMaterials;
-			
+		private:
+
 			int m_NumberMeshes;
 			int m_CurrentMeshIndex;
 

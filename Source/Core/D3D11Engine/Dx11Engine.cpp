@@ -187,7 +187,7 @@ void RedSt4R::Dx11Engine::ClearScreen()
 
 void RedSt4R::Dx11Engine::Render()
 {
-	hr = m_SwapChain->Present(0, 0);
+	hr = m_SwapChain->Present(1, 0);
 	if(FAILED(hr)) RS_ERROR("Failed Presenting the scene!")
 }
 
