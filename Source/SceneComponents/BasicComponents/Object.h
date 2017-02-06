@@ -9,10 +9,10 @@ namespace RedSt4R
 
 	public:
 		virtual void Begin() override;
-		virtual void Render() override;
+		virtual void Update() override;
 		virtual void End() override;
 
-		virtual void BuildMatrices() override;
+		//virtual void BuildMatrices() override;
 
 		virtual void SetObjectPosition(XMFLOAT3 position) override;
 		virtual void SetObjectScale(XMFLOAT3 scale) override;
@@ -22,7 +22,7 @@ namespace RedSt4R
 		virtual void RotateY(float angle) override;
 		virtual void RotateZ(float angle) override;
 
-		virtual void Transform(float x, float y, float z) override;
+		virtual void Translate(float x, float y, float z) override;
 
 		virtual XMFLOAT3 GetObjectPosition() override;
 		virtual float GetObjectPositionX() override;

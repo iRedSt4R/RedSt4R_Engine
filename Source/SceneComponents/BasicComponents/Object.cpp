@@ -65,7 +65,7 @@ void RedSt4R::Object::Begin()
 	
 }
 
-void RedSt4R::Object::Render()
+void RedSt4R::Object::Update()
 {
 	
 }
@@ -75,6 +75,7 @@ void RedSt4R::Object::End()
 	
 }
 
+/*
 void RedSt4R::Object::BuildMatrices()
 {
 	mPosition = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
@@ -89,6 +90,7 @@ void RedSt4R::Object::BuildMatrices()
 	mWorld = XMMatrixIdentity();
 	mWorld = mPosition * mRotation * mScale;
 }
+*/
 
 void RedSt4R::Object::SetObjectPosition(XMFLOAT3 position)
 {
@@ -122,7 +124,7 @@ void RedSt4R::Object::RotateZ(float angle)
 	vRotation.z += angle;
 }
 
-void RedSt4R::Object::Transform(float x, float y, float z)
+void RedSt4R::Object::Translate(float x, float y, float z)
 {
 	XMFLOAT3 vecToAdd = XMFLOAT3(x, y, z);
 

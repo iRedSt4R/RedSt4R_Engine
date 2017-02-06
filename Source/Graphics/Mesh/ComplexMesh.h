@@ -2,6 +2,7 @@
 
 #include "../../Core/D3D11Engine/Dx11Engine.h"
 #include "../../GUI/GuiManager.h"
+#include "../../SceneComponents/Interfaces/IObject.h"
 #include "StaticMesh.h"
 #include <DirectXMath.h>
 #include <assimp/Importer.hpp>
@@ -13,7 +14,7 @@ namespace RedSt4R
 {
 	namespace Graphics
 	{
-		class ComplexMesh
+		class ComplexMesh : public Object
 		{
 		private:
 			Dx11Engine *m_Engine;
@@ -24,6 +25,36 @@ namespace RedSt4R
 		public:
 			std::vector <StaticMesh*> vMeshes;
 			std::vector <Material*> vMaterials;
+
+			virtual void Begin() override;
+
+
+			virtual void Update() override;
+
+
+			virtual void End() override;
+
+
+			virtual void SetObjectPosition(XMFLOAT3 position) override;
+
+
+			virtual void SetObjectScale(XMFLOAT3 scale) override;
+
+
+			virtual void Scale(float scaleFactor) override;
+
+
+			virtual void RotateX(float angle) override;
+
+
+			virtual void RotateY(float angle) override;
+
+
+			virtual void RotateZ(float angle) override;
+
+
+			virtual void Translate(float x, float y, float z) override;
+
 		private:
 
 			int m_NumberMeshes;
@@ -41,13 +72,6 @@ namespace RedSt4R
 			~ComplexMesh();
 
 			void LoadMeshFromFile(char* MeshDir, std::string FolderName);
-			void Update();
-			void Draw();
-			void Scale(float scaleFactor);
-			void Translate(float x, float y, float z);
-			void RotateX(float angle);
-			void RotateY(float angle);
-			void RotateZ(float angle);
 			
 		private:
 			void LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc);

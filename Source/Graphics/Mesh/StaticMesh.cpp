@@ -313,12 +313,6 @@ void RedSt4R::Graphics::StaticMesh::InitBuffers()
 
 void RedSt4R::Graphics::StaticMesh::UpdateMeshBuffers()
 {
-	//if (GUI != nullptr)
-	//{
-	//	TestMaterial->SetRoughness(GUI->g_RoughnessValue);
-		//RS_LOG("Setting Rougness From StaticMesh With GUI Pointer With Value: "<< GUI->g_RoughnessValue)
-	//}
-
 	m_DeviceContext->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	UINT stride = sizeof(VertexB);
@@ -498,41 +492,15 @@ void RedSt4R::Graphics::StaticMesh::Draw()
 //	bLastFrameCulled = bCulled;
 }
 
-
-void RedSt4R::Graphics::StaticMesh::Translate(float x, float y, float z)
+void RedSt4R::Graphics::StaticMesh::UpdatePositionWithParent(XMFLOAT3 parentPosition)
 {
-	XMFLOAT3 vecToAdd = XMFLOAT3(x, y, z);
+	XMFLOAT3 desiredPosition = parentPosition;
+	parentPosition.x += vPosition.x;
+	parentPosition.y += vPosition.y;
+	parentPosition.z += vPosition.z;
 
-	vPosition.x = vPosition.x + vecToAdd.x;
-	vPosition.y = vPosition.y + vecToAdd.y;
-	vPosition.z = vPosition.z + vecToAdd.z;
+	this->SetObjectPosition(desiredPosition);
 }
-
-void RedSt4R::Graphics::StaticMesh::RotateX(float angle)
-{
-	vRotation.x += angle;
-}
-
-//void RedSt4R::Graphics::StaticMesh::RotateY(float angle)
-//{
-//	vRotation.y += angle;
-//}
-
-void RedSt4R::Graphics::StaticMesh::RotateZ(float angle)
-{
-	vRotation.z += angle;
-}
-
-void RedSt4R::Graphics::StaticMesh::Scale(float scaleFactor)
-{
-	vScale.x = scaleFactor * vScale.x;
-	vScale.y = scaleFactor * vScale.y;
-	vScale.z = scaleFactor * vScale.z;
-
-	//AABBVector[0] *= scaleFactor;
-	//AABBVector[1] *= scaleFactor;
-}
-
 
 void RedSt4R::Graphics::StaticMesh::Begin()
 {
@@ -540,9 +508,9 @@ void RedSt4R::Graphics::StaticMesh::Begin()
 }
 
 
-void RedSt4R::Graphics::StaticMesh::Render()
+void RedSt4R::Graphics::StaticMesh::Update()
 {
-	
+	Draw();
 }
 
 

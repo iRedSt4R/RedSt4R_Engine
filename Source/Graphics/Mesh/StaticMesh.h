@@ -108,7 +108,7 @@ namespace RedSt4R
 			ID3D11RenderTargetView* renderTargetViewMap;
 			ID3D11ShaderResourceView* shaderResourceViewMap;
 
-			//--------------- GUI Reference ------------------//
+			//--------------- GUI Pointer ------------------//
 			GuiManager *GUI;
 		
 
@@ -117,27 +117,20 @@ namespace RedSt4R
 			StaticMesh(char* filePath, Dx11Engine *Engine, wchar_t* DiffuseTextureDir, wchar_t* NormalTextureDir = nullptr);
 			~StaticMesh();
 
+			virtual void Begin() override;
+			virtual void Update() override;
+			virtual void End() override;
+
 			void LoadMeshFromFile(char *filePath);
 			void LoadMeshFromFileWithIndex(const aiScene *a_aScene, char *filePath, int index, std::string FolderName, RSMODEL_DESC* a_modelDesc);
 			void AssignMaterial(Material *a_Material);
 			void CreateAABB();
 			void Draw();
-			void Translate(float x, float y, float z);
-			void RotateX(float angle);
-			//void RotateY(float angle);
-			void RotateZ(float angle);
-			void Scale(float scaleFactor);
+			void UpdatePositionWithParent(XMFLOAT3 parentPosition);
 
 			inline RS_Material_Desc* GetMaterialInfo() { return &matDesc; }
 
 
-			virtual void Begin() override;
-
-
-			virtual void Render() override;
-
-
-			virtual void End() override;
 
 		private:
 			void InitDebugAABB();

@@ -1,53 +1,27 @@
 #include "ComplexMesh.h"
 
-RedSt4R::Graphics::ComplexMesh::ComplexMesh(Dx11Engine *Engine, char* MeshDir, std::string FolderName, GuiManager *pGUI)
+
+void RedSt4R::Graphics::ComplexMesh::Begin()
 {
-	m_Engine = Engine;
-
-	RS_Material_Desc matDesc;
-
-	LoadMeshFromFile(MeshDir, FolderName);
-	RS_ERROR("CREATED!!!")
-
-	GUI = pGUI;
+	vPosition = XMFLOAT3(0, 0, 0);
+	vRotation = XMFLOAT3(0, 0, 0);
+	vScale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 }
 
-void RedSt4R::Graphics::ComplexMesh::LoadMeshFromFile(char* MeshDir, std::string FolderName)
-{
-	RSMODEL_DESC modelDesc;
-	LoadRSModelFile(MeshDir, &modelDesc);
-
-	Importer aImporter;
-	const aiScene *aScene = aImporter.ReadFile(modelDesc.fileName, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenSmoothNormals);
-
-
-	for (int m = 0; m < (aScene->mNumMeshes); m++)
-	{
-		TotalVertices += aScene->mMeshes[m]->mNumFaces * 3;
-		//Loading Model
-		StaticMesh* tempMesh = new StaticMesh(m_Engine, GUI);
-		tempMesh->LoadMeshFromFileWithIndex(aScene, &modelDesc.fileName[0], m, &modelDesc.textureFolder[0], &modelDesc);
-		//tempMesh->CreateAABB();
-		vMeshes.push_back(tempMesh);
-
-		//Loading Material
-		RS_Material_Desc *materialDesc = tempMesh->GetMaterialInfo();
-		Material *tempMaterial = new Material(m_Engine);
-		tempMaterial->CreateMaterial(*materialDesc);
-		vMaterials.push_back(tempMaterial);
-		vMeshes[m]->AssignMaterial(vMaterials[m]);
-	}
-	RS_LOG("Total Vertices: "<<TotalVertices)
-
-	this->Scale(15);
-}
 
 void RedSt4R::Graphics::ComplexMesh::Update()
 {
-	if (state[SDL_SCANCODE_KP_1])
+	for (int i = 0; i < vMeshes.size(); i++)
 	{
-		this->RotateX(0.02f);
+		vMeshes[i]->Update();
 	}
+
+	//For Rotation  <---- will move this somewhere else
+	if (state[SDL_SCANCODE_KP_3])
+	{
+		this->RotateX(-0.02f);
+	}
+
 	if (state[SDL_SCANCODE_KP_3])
 	{
 		this->RotateX(-0.02f);
@@ -70,18 +44,140 @@ void RedSt4R::Graphics::ComplexMesh::Update()
 	}
 }
 
-void RedSt4R::Graphics::ComplexMesh::Draw()
-{
-	//Update();
-//	m_Engine->GetDeviceContext()->RSSetState(m_Engine->GetBackCullingRasterizationState());
 
+void RedSt4R::Graphics::ComplexMesh::End()
+{
+
+}
+
+void RedSt4R::Graphics::ComplexMesh::SetObjectPosition(XMFLOAT3 position)
+{
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
-		//vMaterials[i]->SetRoughness(GUI->g_RoughnessValue);
-		//vMaterials[i]->SetGlossiness(GUI->g_GlossinessValue);
-		vMeshes[i]->Draw();
+		vMeshes[i]->SetObjectPosition(position);
+	}
+
+}
+void RedSt4R::Graphics::ComplexMesh::SetObjectScale(XMFLOAT3 scale)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->SetObjectScale(scale);
 	}
 }
+
+
+void RedSt4R::Graphics::ComplexMesh::Scale(float scaleFactor)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->Scale(scaleFactor);
+	}
+}
+
+
+void RedSt4R::Graphics::ComplexMesh::RotateX(float angle)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->RotateX(angle);
+	}
+}
+
+
+void RedSt4R::Graphics::ComplexMesh::RotateY(float angle)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->RotateY(angle);
+	}
+}
+
+
+void RedSt4R::Graphics::ComplexMesh::RotateZ(float angle)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->RotateZ(angle);
+	}
+}
+
+
+void RedSt4R::Graphics::ComplexMesh::Translate(float x, float y, float z)
+{
+	for (int i = 0; i < vMeshes.size(); i++)
+	{
+		vMeshes[i]->Translate(x, y, z);
+	}
+}
+
+RedSt4R::Graphics::ComplexMesh::ComplexMesh(Dx11Engine *Engine, char* MeshDir, std::string FolderName, GuiManager *pGUI)
+{
+	m_Engine = Engine;
+
+	LoadMeshFromFile(MeshDir, FolderName);
+	RS_ERROR("CREATED!!!")
+
+	GUI = pGUI;
+}
+
+void RedSt4R::Graphics::ComplexMesh::LoadMeshFromFile(char* MeshDir, std::string FolderName)
+{
+	RSMODEL_DESC modelDesc;
+	LoadRSModelFile(MeshDir, &modelDesc);
+
+	Importer aImporter;
+	const aiScene *aScene = aImporter.ReadFile(modelDesc.fileName, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenSmoothNormals);
+
+
+	for (int m = 0; m < (aScene->mNumMeshes); m++)
+	{
+		TotalVertices += aScene->mMeshes[m]->mNumFaces * 3;
+
+		//Loading Model
+		StaticMesh* tempMesh = new StaticMesh(m_Engine, GUI);
+		tempMesh->LoadMeshFromFileWithIndex(aScene, &modelDesc.fileName[0], m, &modelDesc.textureFolder[0], &modelDesc);
+		vMeshes.push_back(tempMesh);
+
+		//Loading Material
+		RS_Material_Desc *materialDesc = tempMesh->GetMaterialInfo();
+		Material *tempMaterial = new Material(m_Engine);
+		tempMaterial->CreateMaterial(*materialDesc);
+		vMaterials.push_back(tempMaterial);
+		vMeshes[m]->AssignMaterial(vMaterials[m]);
+	}
+	RS_LOG("Total Vertices: "<<TotalVertices)
+
+	this->Scale(15);
+}
+
+/*
+void RedSt4R::Graphics::ComplexMesh::Update()
+{
+	if (state[SDL_SCANCODE_KP_3])
+	{
+		this->RotateX(-0.02f);
+	}
+	if (state[SDL_SCANCODE_KP_4])
+	{
+		this->RotateY(0.02f);
+	}
+	if (state[SDL_SCANCODE_KP_6])
+	{
+		this->RotateY(-0.02f);
+	}
+	if (state[SDL_SCANCODE_KP_7])
+	{
+		this->RotateZ(0.02f);
+	}
+	if (state[SDL_SCANCODE_KP_9])
+	{
+		this->RotateZ(-0.02f);
+	}
+}
+*/
+
+
 
 void RedSt4R::Graphics::ComplexMesh::LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc)
 {
@@ -118,46 +214,6 @@ void RedSt4R::Graphics::ComplexMesh::LoadRSModelFile(char* filePath, RSMODEL_DES
 	fin.close();
 }
 
-
-void RedSt4R::Graphics::ComplexMesh::Translate(float x, float y, float z)
-{
-	for (int i = 0; i < vMeshes.size(); i++)
-	{
-		vMeshes[i]->Translate(x, y, z);
-	}
-}
-
-void RedSt4R::Graphics::ComplexMesh::Scale(float scaleFactor)
-{
-	for (int i = 0; i < vMeshes.size(); i++)
-	{
-		vMeshes[i]->Scale(scaleFactor);
-	}
-}
-
-void RedSt4R::Graphics::ComplexMesh::RotateX(float angle)
-{
-	for (int i = 0; i < vMeshes.size(); i++)
-	{
-		vMeshes[i]->RotateX(angle);
-	}
-}
-
-void RedSt4R::Graphics::ComplexMesh::RotateY(float angle)
-{
-	for (int i = 0; i < vMeshes.size(); i++)
-	{
-		vMeshes[i]->RotateY(angle);
-	}
-}
-
-void RedSt4R::Graphics::ComplexMesh::RotateZ(float angle)
-{
-	for (int i = 0; i < vMeshes.size(); i++)
-	{
-		vMeshes[i]->RotateZ(angle);
-	}
-}
 
 RedSt4R::Graphics::ComplexMesh::~ComplexMesh()
 {

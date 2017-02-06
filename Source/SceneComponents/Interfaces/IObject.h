@@ -24,10 +24,8 @@ namespace RedSt4R
 
 	public:
 		virtual void Begin() = 0;
-		virtual void Render() = 0;
+		virtual void Update() = 0;
 		virtual void End() = 0;
-
-		virtual void BuildMatrices() = 0;
 
 		virtual void SetObjectPosition(XMFLOAT3 position) = 0;
 		virtual void SetObjectScale(XMFLOAT3 scale) = 0;
@@ -37,7 +35,7 @@ namespace RedSt4R
 		virtual void RotateY(float angle) = 0;
 		virtual void RotateZ(float angle) = 0;
 
-		virtual void Transform(float x, float y, float z) = 0;
+		virtual void Translate(float x, float y, float z) = 0;
 
 
 

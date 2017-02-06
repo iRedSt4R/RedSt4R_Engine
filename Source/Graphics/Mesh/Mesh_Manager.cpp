@@ -18,7 +18,6 @@ void RedSt4R::MeshManager::Update()
 	for (int i = 0; i < vComplexMeshes.size(); i++)
 	{
 		vComplexMeshes[i]->Update();
-		vComplexMeshes[i]->Draw();
 	}
 }
 
