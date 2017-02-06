@@ -73,50 +73,27 @@ float4 GammaCorrectTexture(Texture2D t, SamplerState s, float2 uv)
 {
 	float4 samp = t.Sample(s, uv);
 	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
-	//float4 gct = float4(pow(samp.rgb, 2.2), samp.a);
+	float4 gct = float4(pow(samp.rgb, 1/1.99), samp.a);
+	gct *= 1.2f;
 	//gct.rgb = (((gct.rgb - 0.5f) * max(1.4f, 0)) + 0.5f);
-	return samp;
+	return gct;
 }
 
 //------------------- GETTERS FUNCTIONS --------------------//
 float4 GetAlbedo(float2 a_TexCoord)
 {
-	//if (bHaveDiffuseTexture == 1.0)
-	//{
-	return(ObjTexture.Sample(AnisoClamp, a_TexCoord));
-		//HDRPass(ObjTexture.Sample(ObjSamplerState, a_TexCoord)), a_TexCoord);
-
-		//return ObjTexture.SampleLevel(g_samPoint, a_TexCoord, 0);
-	//}
-	//else
-	//{
-	//	return float4(0.662745, 0.662745, 0.662745, 1.0);
-		//return float4(1, 0.843137, 0, 1.0);
-	//}
+	return GammaCorrectTexture(ObjTexture, ObjSamplerState, a_TexCoord);
 }
 float GetRoughness(float2 a_TexCoord)
 {
-	//if (bHaveRougnessMap == 1.0)
-	//{
-	//return GammaCorrectTexture(RoughnessTexture, ObjSamplerState, a_TexCoord);
-		return RoughnessTexture.Sample(AnisoClamp, a_TexCoord);
-	//}
-	//else
-	//{
-	//	return 1;
-	//}
+	
+	return RoughnessTexture.Sample(AnisoClamp, a_TexCoord);
+	
 }
 float GetMetallness(float2 a_TexCoord)
 {
-	//if (bHaveRougnessMap == 1.0)
-	//{
-	//return GammaCorrectTexture(MetallicTexture, ObjSamplerState, a_TexCoord);
-	return MetallicTexture.Sample(AnisoClamp, a_TexCoord);
-	//}
-	//else
-	//{
-	//	return 1;
-	//}
+	
+	return (MetallicTexture.Sample(AnisoClamp, a_TexCoord), a_TexCoord);
 }
 /*
 float3 GetSpecular(Attributes attributes)
@@ -281,8 +258,8 @@ float4 PSMain(VOut input) : SV_TARGET
 	
 	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
 	
-	finalColor = saturate(pow(finalColor, 1/1.2));
-	finalColor = saturate(finalColor * 1.3f);
+	//finalColor = saturate(pow(finalColor, 1/1.2));
+	//finalColor = saturate(finalColor * 1.3f);
 	//------------- GREY SCALE ------------//
 	//float grayscale = dot(finalColor.rgb, float3(0.3, 0.59, 0.11));
 	//finalColor.rgb = grayscale;

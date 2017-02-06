@@ -10,11 +10,10 @@ namespace RedSt4R
 		std::vector <ComplexMesh*> vComplexMeshes;
 		std::vector <StaticMesh> vStaticMeshes;
 
-		GuiManager *GUI;
 		Dx11Engine *m_Engine;
 
 	public:
-		MeshManager(Dx11Engine *Engine, GuiManager *pGUI);
+		MeshManager(Dx11Engine *Engine);
 		~MeshManager();
 
 		void AddMesh(char* MeshDir, std::string FolderName);

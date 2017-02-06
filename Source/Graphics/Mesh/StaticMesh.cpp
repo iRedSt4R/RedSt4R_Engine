@@ -13,7 +13,7 @@ wchar_t *GetWC(char *c)
 	return wc;
 }
 
-RedSt4R::Graphics::StaticMesh::StaticMesh(Dx11Engine *Engine, GuiManager *pGUI)
+RedSt4R::Graphics::StaticMesh::StaticMesh(Dx11Engine *Engine)
 {
 	m_Engine = Engine;
 	m_Device = m_Engine->GetDevice();
@@ -25,8 +25,6 @@ RedSt4R::Graphics::StaticMesh::StaticMesh(Dx11Engine *Engine, GuiManager *pGUI)
 
 	DebugLineVertexVec.resize(2);
 	frustumPlanes.resize(6);
-
-	GUI = pGUI;
 }
 
 RedSt4R::Graphics::StaticMesh::StaticMesh(char *filePath, Dx11Engine *Engine, wchar_t* DiffuseTextureDir, wchar_t* NormalTextureDir)
@@ -296,17 +294,6 @@ void RedSt4R::Graphics::StaticMesh::InitBuffers()
 
 	m_Device->CreateBuffer(&cbd, NULL, &m_MeshConsantBuffer);
 
-	//HRESULT hr = CreateWICTextureFromFile(m_Device, L"braynzar.jpg", NULL, &MeshTexture);
-	//if (FAILED(hr)) RS_ERROR("Failed Creating WicTexture!");
-
-	//Sample For Texture
-	D3D11_SAMPLER_DESC sampDesc;
-	ZeroMemory(&sampDesc, sizeof(sampDesc));
-
-	sampDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	sampDesc.MaxAnisotropy = 16;
-
-	m_Device->CreateSamplerState(&sampDesc, &MeshSamplerState);
 
 	VertexVecSize = VertexVec.size();
 }
@@ -481,7 +468,6 @@ void RedSt4R::Graphics::StaticMesh::Draw()
 		UpdateMeshBuffers();
 
 		TestMaterial->PrepareMaterial();
-		m_DeviceContext->PSSetSamplers(0, 1, &MeshSamplerState);
 
 		m_DeviceContext->RSSetState(m_Engine->GetBackCullingRasterizationState());
 		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

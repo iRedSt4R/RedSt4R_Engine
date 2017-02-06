@@ -26,6 +26,22 @@ namespace RedSt4R
 			std::vector <StaticMesh*> vMeshes;
 			std::vector <Material*> vMaterials;
 
+
+		private:
+
+			int m_NumberMeshes;
+			int m_CurrentMeshIndex;
+
+			int FaceCount;
+			int VertexCount;
+			int TotalVertices = 0;
+
+		public:
+			ComplexMesh(Dx11Engine *Engine, char* MeshDir, std::string FolderName);
+			~ComplexMesh();
+
+			void LoadMeshFromFile(char* MeshDir, std::string FolderName);
+			
 			virtual void Begin() override;
 
 
@@ -56,25 +72,9 @@ namespace RedSt4R
 			virtual void Translate(float x, float y, float z) override;
 
 		private:
-
-			int m_NumberMeshes;
-			int m_CurrentMeshIndex;
-
-			int FaceCount;
-			int VertexCount;
-			int TotalVertices = 0;
-
-			GuiManager *GUI;
-
-
-		public:
-			ComplexMesh(Dx11Engine *Engine, char* MeshDir, std::string FolderName, GuiManager *pGUI);
-			~ComplexMesh();
-
-			void LoadMeshFromFile(char* MeshDir, std::string FolderName);
-			
-		private:
 			void LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc);
+			void TestRotation();
+
 		};
 
 	}

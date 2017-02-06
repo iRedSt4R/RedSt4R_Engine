@@ -100,20 +100,12 @@ namespace RedSt4R
 			ID3D11Buffer* m_IndexBuffer;
 			ID3D11Buffer* m_MeshConsantBuffer;
 			ID3D11ShaderResourceView* MeshTexture;
-			ID3D11Resource *m_TextureResource;
 			ID3D11SamplerState* MeshSamplerState;
 
-			//---------------- Post Process-----------------//
-			ID3D11Texture2D* renderTargetTextureMap;
-			ID3D11RenderTargetView* renderTargetViewMap;
-			ID3D11ShaderResourceView* shaderResourceViewMap;
-
-			//--------------- GUI Pointer ------------------//
-			GuiManager *GUI;
 		
 
 		public:
-			StaticMesh(Dx11Engine *Engine, GuiManager *pGUI);
+			StaticMesh(Dx11Engine *Engine);
 			StaticMesh(char* filePath, Dx11Engine *Engine, wchar_t* DiffuseTextureDir, wchar_t* NormalTextureDir = nullptr);
 			~StaticMesh();
 
