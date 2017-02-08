@@ -11,6 +11,7 @@
 #include "../../Graphics/Shaders/Shader.h"
 #include "../../Graphics/Camera/FirstPersonCamera.h"
 #include "../EngineResources.h"
+#include "../../Graphics/PostProcess/PostProcess.h"
 
 using namespace DirectX;
 using namespace RedSt4R;
@@ -42,9 +43,10 @@ namespace RedSt4R
 		ID3D11DepthStencilView *m_DepthStencilView;
 		ID3D11RasterizerState *m_DefaultRasterizationState;
 		//--------Post_Process Texture-------------//
-		ID3D11Texture2D* renderTargetTextureMap;
+		ID3D11Texture2D* postProcessTexture;
 		ID3D11RenderTargetView* renderTargetViewMap;
 		ID3D11ShaderResourceView* shaderResourceViewMap;
+		PostProcess* pp;
 		//-----------Static Camera [Temporal]-------------//
 		XMMATRIX mCameraView;
 		XMMATRIX mCameraProjection;
@@ -82,7 +84,7 @@ namespace RedSt4R
 		inline ID3D11InputLayout* GetInputLayout() const { return m_MainShader->GetInputLayout(); }
 		inline ID3D11InputLayout* GetInputLayoutB() const { return m_MainShader->GetInputLayoutB(); }
 		inline ID3D11RasterizerState* GetBackCullingRasterizationState() { return m_DefaultRasterizationState; }
-		inline ID3D11Texture2D* GetTexture2DForPostProcess() { return renderTargetTextureMap; }
+		inline ID3D11Texture2D* GetTexture2DForPostProcess() { return postProcessTexture; }
 		inline ID3D11RenderTargetView* GetRTVForPostProcess() { return renderTargetViewMap; }
 		inline ID3D11ShaderResourceView* GetSRV2DForPostProcess() { return shaderResourceViewMap; }
 		inline EngineResources* GetEngineResource() 

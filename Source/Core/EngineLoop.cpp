@@ -40,7 +40,7 @@ void RedSt4R::EngineLoop::Begin()
 	gui = new GuiManager(engineResources);
 	meshManager = new MeshManager(dx11Engine);
 	DirLightTest = new DireLight(dx11Engine, XMFLOAT3(0.5f, 0.65f, -1.0f), XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f), XMFLOAT4(0.881176f, 0.866667f, 0.509804f, 1.0f));
-	CubeTest = new CubeMap(dx11Engine, L"Assets/OutputCube2.dds");
+	//CubeTest = new CubeMap(dx11Engine, L"Assets/OutputCube2.dds");
 
 
 	meshManager->AddWithOffset("Assets/Cer.rsmodel", 0);
@@ -54,12 +54,13 @@ void RedSt4R::EngineLoop::Update()
 	gui->UpdateGui();
 	DirLightTest->SetLight();
 	dx11Engine->ClearScreen();
-	CubeTest->UpdateCubeMap();
-	dx11Engine->UpdatePipeline();
+	//CubeTest->UpdateCubeMap();
+	dx11Engine->PreparePipeline();
+	//dx11Engine->UpdatePipeline();
 
 
 	
-	CubeTest->BindCubeMap(3);
+	//CubeTest->BindCubeMap(3);
 	meshManager->Update();
 	gui->RenderGui();
 	dx11Engine->Render();

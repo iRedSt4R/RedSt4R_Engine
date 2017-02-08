@@ -15,6 +15,7 @@ RedSt4R::Dx11Engine::Dx11Engine(HWND a_hwnd)
 
 void RedSt4R::Dx11Engine::InitEngine()
 {
+	pp = new PostProcess();
 	//-------------------------------Creating(Swap Chain|Device|Device Context)-----------------------------//
 	DXGI_MODE_DESC modeDesc;
 	ZeroMemory(&modeDesc, sizeof(DXGI_MODE_DESC));
@@ -67,9 +68,10 @@ void RedSt4R::Dx11Engine::InitEngine()
 	
 
 	m_MainShader = new RedSt4R::Graphics::Shader(m_Device, m_DeviceContext);
-	m_MainShader->RS_CreateVertexShader(L"Shader.fx");
 	m_MainShader->RS_CreatePixelShader(L"Shader.fx");
+	m_MainShader->RS_CreateVertexShader(L"Shader.fx");
 	m_MainShader->RS_CreateInputLayoutB();
+	pp->Init(m_Device, m_DeviceContext);
 	
 	//-------------Creating Depth Stencil View-------------------
 	D3D11_TEXTURE2D_DESC depthtextureDesc = {};
@@ -123,7 +125,7 @@ void RedSt4R::Dx11Engine::InitEngine()
 	textureDesc.MiscFlags = 0;
 
 	// Create the texture
-	m_Device->CreateTexture2D(&textureDesc, NULL, &renderTargetTextureMap);
+	m_Device->CreateTexture2D(&textureDesc, NULL, &postProcessTexture);
 	
 
 	renderTargetViewDesc.Format = textureDesc.Format;
@@ -131,14 +133,14 @@ void RedSt4R::Dx11Engine::InitEngine()
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
 	// Create the render target view.
-	m_Device->CreateRenderTargetView(renderTargetTextureMap, &renderTargetViewDesc, &renderTargetViewMap);
+	m_Device->CreateRenderTargetView(postProcessTexture, &renderTargetViewDesc, &renderTargetViewMap);
 	shaderResourceViewDesc.Format = textureDesc.Format;
 	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
 	shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
 	// Create the shader resource view.
-	m_Device->CreateShaderResourceView(renderTargetTextureMap, &shaderResourceViewDesc, &shaderResourceViewMap);
+	m_Device->CreateShaderResourceView(postProcessTexture, &shaderResourceViewDesc, &shaderResourceViewMap);
 }
 
 void RedSt4R::Dx11Engine::PreparePipeline()
@@ -147,16 +149,17 @@ void RedSt4R::Dx11Engine::PreparePipeline()
 	m_DeviceContext->VSSetShader(m_MainShader->GetVertexShader(), 0, 0);
 	m_DeviceContext->PSSetShader(m_MainShader->GetPixelShader(), 0, 0);
 	m_DeviceContext->IASetInputLayout(m_MainShader->GetInputLayoutB());
-	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+	m_DeviceContext->OMSetRenderTargets(1, &renderTargetViewMap, m_DepthStencilView);
 
 
 }
 
 void RedSt4R::Dx11Engine::UpdatePipeline()
 {
+//	PreparePipeline();
 	m_DeviceContext->VSSetShader(m_MainShader->GetVertexShader(), 0, 0);
 	m_DeviceContext->PSSetShader(m_MainShader->GetPixelShader(), 0, 0);
-	//m_DeviceContext->IASetInputLayout(m_MainShader->GetInputLayout());
+
 	const UINT8 *state = SDL_GetKeyboardState(NULL);
 
 	if (state[SDL_SCANCODE_F1])
@@ -178,7 +181,7 @@ void RedSt4R::Dx11Engine::ClearScreen()
 	clearColor[3] = 1.0f;
 
 
-	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, clearColor);
+	m_DeviceContext->ClearRenderTargetView(renderTargetViewMap, clearColor);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	FPSCamera->UpdateInput();
@@ -187,6 +190,16 @@ void RedSt4R::Dx11Engine::ClearScreen()
 
 void RedSt4R::Dx11Engine::Render()
 {
+	float clearColor[4];
+	clearColor[0] = 0.9f;
+	clearColor[1] = 0.2f;
+	clearColor[2] = 0.4f;
+	clearColor[3] = 1.0f;
+
+	//m_DeviceContext->ClearRenderTargetView(renderTargetViewMap, clearColor);
+	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+	pp->Render(postProcessTexture, renderTargetViewMap, shaderResourceViewMap);
+
 	hr = m_SwapChain->Present(1, 0);
 	if(FAILED(hr)) RS_ERROR("Failed Presenting the scene!")
 }
