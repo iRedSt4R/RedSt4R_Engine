@@ -256,7 +256,7 @@ float4 PSMain(VOut input) : SV_TARGET
 
 	float4 diffuse = GetAlbedo(input.TexCoord);
 	
-	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
+	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), 1-GetRoughness(input.TexCoord));
 	
 	//finalColor = saturate(pow(finalColor, 1/1.2));
 	//finalColor = saturate(finalColor * 1.3f);

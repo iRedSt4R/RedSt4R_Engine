@@ -5,6 +5,7 @@
 #define MSAA_QUALITY 1
 
 
+
 HRESULT hr;
 
 
@@ -156,7 +157,7 @@ void RedSt4R::Dx11Engine::PreparePipeline()
 
 void RedSt4R::Dx11Engine::UpdatePipeline()
 {
-//	PreparePipeline();
+	PreparePipeline();
 	m_DeviceContext->VSSetShader(m_MainShader->GetVertexShader(), 0, 0);
 	m_DeviceContext->PSSetShader(m_MainShader->GetPixelShader(), 0, 0);
 
@@ -182,6 +183,7 @@ void RedSt4R::Dx11Engine::ClearScreen()
 
 
 	m_DeviceContext->ClearRenderTargetView(renderTargetViewMap, clearColor);
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, clearColor);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	FPSCamera->UpdateInput();
@@ -196,7 +198,6 @@ void RedSt4R::Dx11Engine::Render()
 	clearColor[2] = 0.4f;
 	clearColor[3] = 1.0f;
 
-	//m_DeviceContext->ClearRenderTargetView(renderTargetViewMap, clearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	pp->Render(postProcessTexture, renderTargetViewMap, shaderResourceViewMap);
 
