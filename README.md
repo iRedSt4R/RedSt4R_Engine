@@ -1,6 +1,7 @@
 # RedSt4R_Engine
 <snippet>
-  <content><![CDATA[
+  <content>
+My Hobbystic 3D Engine Written in C++ 
 # ${1:Project Name}
 TODO: Write a project description
 ## Installation
