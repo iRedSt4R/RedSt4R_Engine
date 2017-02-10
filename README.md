@@ -14,6 +14,13 @@ My Hobbystic 3D Engine Written in C++
 - Simple IMGUI integration for Gui
 
 # Future Plans
-- asd
+- Implement Saving/Loading Scenes
+- Implement Animation System
+- Abstracting Renderer to be able to use multiply graphics API like OpenGl or Vulkan
+- Add IBL, SSAO and more "PBR stuff"
+- Add Deffered Rendering
+- Implement Culling Systems like Frustrum Culling to increase performance
+
 </content>
 </snippet>
+ 
