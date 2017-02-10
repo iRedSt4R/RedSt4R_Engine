@@ -12,7 +12,8 @@ My Hobbystic 3D Engine Written in C++
 - Physically Base Rendering (Brdf with Disney Diffuse and GGX for Specular)
 - Diffuse, Normal, Roughness, Metallic/Glossiness Textures Support
 - Simple IMGUI integration for Gui
-## Future Plans
+
+# Future Plans
 - asd
 </content>
 </snippet>
