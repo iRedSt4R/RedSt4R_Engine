@@ -3,8 +3,10 @@
   <content>
 My Hobbystic 3D Engine Written in C++ 
 ![alt tag](http://i.imgur.com/dXE0aWA.jpg)
-# ${1:Project Name}
-TODO: Write a project description
+# Features
+- DirectX 11 Rendering and (Hlsl for shaders)
+- Wide range of 3D models supported (Assimp Loader)
+- 
 ## Installation
 TODO: Describe the installation process
 ## Usage
