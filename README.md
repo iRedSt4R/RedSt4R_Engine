@@ -11,6 +11,7 @@ My Hobbystic 3D Engine Written in C++
 - Anti Aliasing (FXAA)
 - Physically Base Rendering (Brdf with Disney Diffuse and GGX for Specular)
 - Diffuse, Normal, Roughness, Metallic/Glossiness Textures Support
+# Future Plans
+- 
 </content>
-  <tabTrigger>readme</tabTrigger>
 </snippet>
