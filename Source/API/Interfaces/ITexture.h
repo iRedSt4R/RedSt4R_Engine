@@ -19,8 +19,8 @@ namespace RedSt4R
 
 		public:
 
-			virtual void LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType) = 0;
-			virtual void Render() = 0;
+			virtual bool LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType) = 0;
+			virtual bool Render() = 0;
 		};
 	}
 }

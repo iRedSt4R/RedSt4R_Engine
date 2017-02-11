@@ -20,8 +20,8 @@ namespace RedSt4R
 			Texture();
 			~Texture();
 
-			virtual void LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType) override;
-			virtual void Render() override;
+			virtual bool LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType) override;
+			virtual bool Render() override;
 
 		};
 

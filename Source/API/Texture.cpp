@@ -29,18 +29,26 @@ RedSt4R::API::Texture::~Texture()
 
 }
 
-void RedSt4R::API::Texture::LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType)
+bool RedSt4R::API::Texture::LoadTexture(EngineResources* pEngineResources, wchar_t* filePath, int a_textureType)
 {
+	HRESULT r;
 	engineResources = pEngineResources;
 	textureType = a_textureType;
 
-	CreateWICTextureFromFile(engineResources->GetDevice(), filePath, NULL, &textureSRV);
-
-	//------------------------ Create Buffer For Texture (TODO) --------------------------//
-
+	r = CreateWICTextureFromFile(engineResources->GetDevice(), filePath, NULL, &textureSRV);
+	if (FAILED(r))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
-void RedSt4R::API::Texture::Render()
+bool RedSt4R::API::Texture::Render()
 {
 	engineResources->GetDeviceContext()->PSSetShaderResources(textureType, 1, &textureSRV);
+
+	return true;
 }

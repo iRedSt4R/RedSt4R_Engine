@@ -45,21 +45,16 @@ bool test;
 
 int myChoice;
 
-GuiManager::GuiManager(Dx11Engine *a_Engine)
+GuiManager::GuiManager()
 {
-	m_Engine = a_Engine;
-	if (m_Engine)
-	{
-		m_Device = m_Engine->GetDevice();
-		m_DeviceContext = m_Engine->GetDeviceContext();
-	}
+	
 }
 
 
-GuiManager::GuiManager(EngineResources *a_EngineResources)
+GuiManager::GuiManager(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 {
-	m_Device = a_EngineResources->GetDevice();
-	m_DeviceContext = a_EngineResources->GetDeviceContext();
+	m_Device = pDevice;
+	m_DeviceContext = pDeviceContext;
 	PrepareGui();
 	SetupImGuiStyle(true, 0.8f);
 }

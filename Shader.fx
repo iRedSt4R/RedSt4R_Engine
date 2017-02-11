@@ -53,28 +53,29 @@ SamplerState AnisoClamp
 	AddressV = Clamp;
 };
 
-/*
+
 cbuffer Material : register(b2)
 {
 	float bHaveDiffuseTexture;
 	float bHaveNormalMap;
-	float bHaveGlossMap;
 	float bHaveRougnessMap;
-	float bHaveMetallMap;
-	float mRoughness;
-	float mGlossiness;
+	float bHaveMetallicMap;
+	float mRougness;
+	float mMetalness;
 	float p0;
+	float p1;
+	float4 mDiffuseColor;
 };
 
-*/
+
 //-------------------- HELPER FUNCTIONS -----------------------//
 
 float4 GammaCorrectTexture(Texture2D t, SamplerState s, float2 uv)
 {
 	float4 samp = t.Sample(s, uv);
 	//finalColor.rgb = ((finalColor.rgb - 0.5f) * max(1.2f, 0)) + 0.5f;
-	float4 gct = float4(pow(samp.rgb, 1/1.99), samp.a);
-	gct *= 1.2f;
+	float4 gct = float4(pow(samp.rgb, 1/1.75), samp.a);
+	gct = saturate(1.2f * gct);
 	//gct.rgb = (((gct.rgb - 0.5f) * max(1.4f, 0)) + 0.5f);
 	return gct;
 }
@@ -82,32 +83,40 @@ float4 GammaCorrectTexture(Texture2D t, SamplerState s, float2 uv)
 //------------------- GETTERS FUNCTIONS --------------------//
 float4 GetAlbedo(float2 a_TexCoord)
 {
-	return GammaCorrectTexture(ObjTexture, ObjSamplerState, a_TexCoord);
+	if (bHaveDiffuseTexture > 0)
+	{
+		return GammaCorrectTexture(ObjTexture, ObjSamplerState, a_TexCoord);
+	}
+	else
+	{
+		return float4(0.7f, 0.7f, 0.7f, 1.0f);
+	}
 }
+
 float GetRoughness(float2 a_TexCoord)
 {
-	
-	return RoughnessTexture.Sample(AnisoClamp, a_TexCoord);
-	
+	if (bHaveRougnessMap > 0)
+	{
+		return RoughnessTexture.Sample(ObjSamplerState, a_TexCoord);
+	}
+	else
+	{
+		return 1.0f;
+	}
 }
+
 float GetMetallness(float2 a_TexCoord)
 {
-	
-	return (MetallicTexture.Sample(AnisoClamp, a_TexCoord), a_TexCoord);
-}
-/*
-float3 GetSpecular(Attributes attributes)
-{
-	return (1.0f - u_UsingSpecularMap) * u_SpecularColor + u_UsingSpecularMap * GammaCorrectTextureRGB(u_SpecularMap, u_SpecularSampler, attributes.uv);
-}
-
-float GetGloss(Attributes attributes)
-{
-	u_GlossColor + u_UsingGlossMap * GammaCorrectTextureRGB(u_GlossMap, u_GlossSampler, attributes.uv).r;
+	if (bHaveMetallicMap > 0)
+	{
+		return MetallicTexture.Sample(ObjSamplerState, a_TexCoord);
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
-
-*/
 //------------------------ BRDF STUFF ----------------------//
 float FresnelSchlick(float f0, float fd90, float view)
 {
@@ -141,8 +150,8 @@ float Disney(float3 N, float3 V, float3 L, float roughness)
 	float fd90 = energyBias + 2.0f * (LdotH * LdotH) * roughness;
 	float f0 = 1.0f;
 
-	float lightScatter = FresnelSchlick(f0, fd90, NdotL);
-	float viewScatter = FresnelSchlick(f0, fd90, NdotV);
+	float lightScatter = FresnelSchlick(f0, fd90, NdotL).r;
+	float viewScatter = FresnelSchlick(f0, fd90, NdotV).r;
 
 	return lightScatter * viewScatter * energyFactor;
 }
@@ -192,18 +201,19 @@ float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float
 
 	float3 diffuse_color = base_color * (1 - metallic);
 	float3 diffuse_brdf = diffuse_color;
-	diffuse_brdf *= saturate(dot_n_l * Disney(N, V, L, alpha));
+	diffuse_brdf *= saturate(dot_n_l * Disney(N, V, L, alpha) * 1.8f);
 
 	//Reflections
 	float3 reflectionVector = normalize(reflect(-V, N));
 	float smoothness = 1 - roughness;
 	float mipLevel = (1.0f - smoothness * smoothness) * 10.0f;
 	float4 cs = CubeMapTexture.SampleLevel(g_samPoint, reflectionVector, mipLevel);
-	cs *= dot_n_l;
+	cs = cs * dot_n_l;
 
-
-	diffuse_brdf = saturate(lerp(diffuse_brdf, cs.rgb , metallic));
+	diffuse_brdf = saturate(lerp(diffuse_brdf, cs.rgb, metallic));
 	diffuse_brdf *= base_color.rgb;
+
+
 	
 	float specPow = pow((1 - roughness), 4);
 	float3 specular_brdf = GGX(N, V, L, roughness, float3(specPow, specPow, specPow));
@@ -240,29 +250,28 @@ float4 PSMain(VOut input) : SV_TARGET
 {
 	float3 Normal = normalize(input.Normal);
 
-	float3 Tangent = normalize(input.Tangent);
-	Tangent = normalize(Tangent - dot(Tangent, input.TexCoord) * Normal);
-	float3 Binormal = cross(Tangent, Normal);
-	float3 BumpMapNormal = NormalTexture.Sample(AnisoClamp, input.TexCoord);
-	BumpMapNormal = (2.0f * BumpMapNormal) - 1.0f;
-	float3 NewNormal;
-	float3x3 TBN = float3x3(Tangent, Binormal, Normal);
-	NewNormal = mul(BumpMapNormal, TBN);
-	NewNormal = normalize(NewNormal);
-
-
-	input.Normal = NewNormal;
+	if (bHaveNormalMap > 0)
+	{
+		float3 Tangent = normalize(input.Tangent);
+		Tangent = normalize(Tangent - dot(Tangent, input.TexCoord) * Normal);
+		float3 Binormal = cross(Tangent, Normal);
+		float3 BumpMapNormal = NormalTexture.Sample(AnisoClamp, input.TexCoord);
+		BumpMapNormal = (2.0f * BumpMapNormal) - 1.0f;
+		float3 NewNormal;
+		float3x3 TBN = float3x3(Tangent, Binormal, Normal);
+		NewNormal = mul(BumpMapNormal, TBN);
+		NewNormal = normalize(NewNormal);
+		input.Normal = NewNormal;
+	}
+	else
+	{
+		input.Normal = Normal;
+	}
 
 
 	float4 diffuse = GetAlbedo(input.TexCoord);
 	
-	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), 1-GetRoughness(input.TexCoord));
-	
-	//finalColor = saturate(pow(finalColor, 1/1.2));
-	//finalColor = saturate(finalColor * 1.3f);
-	//------------- GREY SCALE ------------//
-	//float grayscale = dot(finalColor.rgb, float3(0.3, 0.59, 0.11));
-	//finalColor.rgb = grayscale;
+	float3 finalColor = BRDF(Lightdir, input.viewDirection, input.Normal, diffuse.rgb, GetMetallness(input.TexCoord), GetRoughness(input.TexCoord));
 
 	return float4(finalColor, 1.0f);
 }

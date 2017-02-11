@@ -56,10 +56,6 @@ namespace RedSt4R
 		XMVECTOR camTarget;
 		XMVECTOR camUp;
 
-		//RedSt4R::Graphics::CubeMap *m_CubeMap;
-
-		
-
 	public:
 		Dx11Engine(HWND a_hwnd);
 		~Dx11Engine();
@@ -71,10 +67,8 @@ namespace RedSt4R
 		void Render();
 		void ShutDown();
 
-		//--------------GUI Functions------------//
 		void SetFPSMouse();
 		void SetEditorMouse();
-		//void SetCubeMap(CubeMap *pCubeMap);
 
 
 		inline ID3D11DeviceContext* GetDeviceContext() const { return m_DeviceContext; }
@@ -96,10 +90,6 @@ namespace RedSt4R
 			return eg;
 		}
 
-		//inline CubeMap* GetCubeMap() { return m_CubeMap; }
-		//inline XMMATRIX GetCameraView() const { return mCameraView; }
-		//inline XMMATRIX GetCameraProjection() const { return mCameraProjection; }
-		
 	private:
 		void CreateStaticCamera();
 		

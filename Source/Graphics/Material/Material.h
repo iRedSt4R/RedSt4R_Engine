@@ -14,12 +14,13 @@ struct cbMaterial
 {
 	float bHaveDiffuseTexture;
 	float bHaveNormalMap;
-	float bHaveGlossMap;
 	float bHaveRougnessMap;
 	float bHaveMetallicMap;
 	float mRougness;
-	float mGlossiness;
+	float mMetalness;
 	float p0;
+	float p1;
+	XMFLOAT4 mDiffuseColor;
 };
 
 //Forward declaration to avoid errors
@@ -50,15 +51,10 @@ namespace RedSt4R
 			float m_Roughness;
 			float m_Glossiness;
 			//----------Material Textures-------------//
-			//ID3D11ShaderResourceView *DiffuseTextureRV;
 			RedSt4R::API::Texture* DiffuseTexture;
 			RedSt4R::API::Texture* NormalTexture;
 			RedSt4R::API::Texture* RougnessTexture;
 			RedSt4R::API::Texture* MetallicTexture;
-
-			//ID3D11ShaderResourceView *NormalTextureRV;
-			//ID3D11ShaderResourceView *RougnessTextureRV;
-			//ID3D11ShaderResourceView *MetallicTextureRV;
 
 			ID3D11SamplerState *FilteringState;
 

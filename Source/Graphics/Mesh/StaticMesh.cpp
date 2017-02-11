@@ -51,7 +51,7 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFile(char *filePath)
 {
 
 	Importer aImporter;
-	const aiScene *aScene = aImporter.ReadFile(filePath, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+	const aiScene *aScene = aImporter.ReadFile(filePath, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenSmoothNormals);
 
 	RS_WARNING("Number Meshes:" << aScene->mNumMeshes)
 
@@ -152,28 +152,35 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 			aiString path;  // filename
 			std::string currentPath = "Assets/" + FolderName + "/";
 			
-			if (material->GetTexture(aiTextureType_DIFFUSE, texIndex, &path) == AI_SUCCESS)
+			if (material->GetTexture(aiTextureType_DIFFUSE, texIndex, &path) == AI_SUCCESS && a_modelDesc->flag == "use_def")
 			{
 				std::string finalPath = currentPath + path.data;
-				RS_WARNING(&finalPath[0])
 				matDesc.diffuseTextureDir = GetWC(&finalPath[0]);
 			}
+			else
+			{
+				matDesc.diffuseTextureDir = GetWC(&a_modelDesc->diffuseTexName[0]);
+			}
 
-			if (material->GetTexture(aiTextureType_HEIGHT, texIndex, &path) == AI_SUCCESS)
+			if (material->GetTexture(aiTextureType_HEIGHT, texIndex, &path) == AI_SUCCESS && a_modelDesc->flag == "use_def")
 			{
 				std::string finalPath = currentPath + path.data;
-				RS_WARNING("FOUND NORMAL MAP!! :"<<&finalPath[0])
 				matDesc.normalTextureDir = GetWC(&finalPath[0]);
 			}
-			else RS_ERROR("DIDNT FOUND NORMAL MAP!!!!")
+			else
+			{
+				matDesc.normalTextureDir = GetWC(&a_modelDesc->normalTexName[0]);
+			}
 
 			if (material->GetTexture(aiTextureType_SPECULAR, texIndex, &path) == AI_SUCCESS)
 			{
 				std::string finalPath = currentPath + path.data;
-				RS_WARNING("FOUND ROUGHNESS MAP!! :" << &finalPath[0])
 				matDesc.rougnessTextureDir = GetWC(&finalPath[0]);
 			}
-			else RS_ERROR("DIDNT FOUND ROUGHNESS MAP!!!!")
+			else
+			{
+				matDesc.rougnessTextureDir = GetWC(&a_modelDesc->roughnessTexName[0]);
+			}
 
 
 			for (int i = 0; i < VertexPosVec.size(); i++)
@@ -195,13 +202,13 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 
 				VertexVec.push_back(tempVertexT);
 			}
-			//std::string finalPath = a_modelDesc->textureFolder;
+			
+			if (a_modelDesc->flag != "use_def")
+			{
+				matDesc.metallicTextureDir = GetWC(&a_modelDesc->metalnessTexName[0]);
+			}
 
-			matDesc.diffuseTextureDir = GetWC(&a_modelDesc->diffuseTexName[0]);
-			matDesc.normalTextureDir = GetWC(&a_modelDesc->normalTexName[0]);
-			matDesc.rougnessTextureDir = GetWC(&a_modelDesc->roughnessTexName[0]);
-			matDesc.metallicTextureDir = GetWC(&a_modelDesc->metalnessTexName[0]);
-	InitBuffers();
+			InitBuffers();
 
 
 }

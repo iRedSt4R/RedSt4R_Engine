@@ -1,8 +1,6 @@
 #pragma once
 
 #include <d3d11.h>
-#include "../Core/D3D11Engine/Dx11Engine.h"
-#include "../Core/EngineResources.h"
 #include <iostream>
 #include <SDL.h>
 #include "imgui.h"
@@ -13,21 +11,20 @@
 #include <algorithm>
 #include <iterator>
 #include <sys/types.h>
-using namespace RedSt4R;
+
 
 class GuiManager
 {
 private:
 	ID3D11Device* m_Device;
 	ID3D11DeviceContext *m_DeviceContext;
-	Dx11Engine *m_Engine;
 
 	//------Left Column Data---------//
 	float LeftPanelWidth = 200;
 
 public:
-	GuiManager(Dx11Engine *a_Engine);
-	GuiManager(EngineResources *a_EngineResources);
+	GuiManager();
+	GuiManager(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
 	~GuiManager();
 
 	void SetInputToImGui();

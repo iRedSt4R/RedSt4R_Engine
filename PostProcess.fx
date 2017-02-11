@@ -35,6 +35,24 @@ VOut VSMain(float4 inPos : POSITION, float2 inTexCoord : TEXCOORD)
 	return output;
 }
 
+float4 BlurColor(float2 Coord, Texture2D inputTexture, float MipBias)
+{
+	float2 sc = float2(1366.0f, 768.0f);
+	float2 TexelSize = MipBias / sc.xy;
+
+	float4  Color = inputTexture.Sample(g_samPoint, Coord, MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(TexelSize.x, 0.0), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(-TexelSize.x, 0.0), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(0.0, TexelSize.y), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(0.0, -TexelSize.y), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(TexelSize.x, TexelSize.y), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(-TexelSize.x, TexelSize.y), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(TexelSize.x, -TexelSize.y), MipBias);
+	Color += inputTexture.Sample(g_samPoint, Coord + float2(-TexelSize.x, -TexelSize.y), MipBias);
+
+	return Color / 9.0;
+}
+
 float4 PSMain(VOut input) : SV_Target
 {
 	float4 Color = inputTexture.Sample(g_samPoint, input.texCoord);
@@ -99,6 +117,18 @@ float4 PSMain(VOut input) : SV_Target
 	//fragColor = color;
 	colorr.w = 1.0f;
 	// -------------------------- END Simple Radial Blur -------------------------//
+	
+	float Threshold = 0.2;
+	float Intensity = 0.8;
+	float BlurSize = 2.5;
+
+	float2 uvvv = input.texCoord;
+	float4 ccolor = inputTexture.Sample(g_samPoint, uvvv);
+	float4 Highlight = clamp(BlurColor(uvvv, inputTexture, BlurSize) - Threshold, 0.0, 1.0)*1.0 / (1.0 - Threshold);
+
+	float4 ccc = 1.0 - (1.0 - ccolor)*(1.0 - Highlight*Intensity);
+
+
 
 	return float4(fxaaColor, 1.0);
 }

@@ -42,7 +42,7 @@ void RedSt4R::Graphics::ComplexMesh::LoadMeshFromFile(char* MeshDir, std::string
 	LoadRSModelFile(MeshDir, &modelDesc);
 
 	Importer aImporter;
-	const aiScene *aScene = aImporter.ReadFile(modelDesc.fileName, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenSmoothNormals);
+	const aiScene *aScene = aImporter.ReadFile(modelDesc.fileName, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
 
 	for (int m = 0; m < (aScene->mNumMeshes); m++)
 	{
