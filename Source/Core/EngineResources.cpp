@@ -19,8 +19,3 @@ void RedSt4R::EngineResources::SetDeviceContext(ID3D11DeviceContext* pDeviceCont
 {
 	deviceContext = pDeviceContext;
 }
-
-void RedSt4R::EngineResources::SetGuiManager(GuiManager* pGUI)
-{
-	GUI = pGUI;
-}

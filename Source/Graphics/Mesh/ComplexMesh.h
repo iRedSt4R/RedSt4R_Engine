@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../Core/D3D11Engine/Dx11Engine.h"
-#include "../../GUI/GuiManager.h"
 #include "../../SceneComponents/Interfaces/IObject.h"
 #include "StaticMesh.h"
 #include <DirectXMath.h>

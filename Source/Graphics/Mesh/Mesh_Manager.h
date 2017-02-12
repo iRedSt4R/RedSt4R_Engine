@@ -1,6 +1,5 @@
 #pragma once
 #include "../../Core/RS_Engine.h"
-#include "../../GUI/GuiManager.h"
 
 namespace RedSt4R
 {
@@ -21,9 +20,6 @@ namespace RedSt4R
 		void RemoveMesh(UINT index);
 		void Clear();
 		void AddWithOffset(char* MeshDir, float x_offset);
-
-		//For Gui
-		//inline GetMeshPositionX(int meshIndex) { return vComplexMeshes[meshIndex]-> }
 
 		inline std::vector <ComplexMesh*> GetMeshVector() { return vComplexMeshes; }
 	};

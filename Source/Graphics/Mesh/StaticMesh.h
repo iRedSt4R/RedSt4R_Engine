@@ -12,7 +12,6 @@
 #include "../Material/WICTextureLoader.h"
 #include "../Material/RS_Material_Desc.h"
 #include "../Mesh/StaticMesh.h"
-#include "../../GUI/GuiManager.h"
 #include "RSMODEL_DESC.h"
 #include <fstream>
 #include "../../SceneComponents/BasicComponents/Object.h"
@@ -101,8 +100,6 @@ namespace RedSt4R
 			ID3D11Buffer* m_MeshConsantBuffer;
 			ID3D11ShaderResourceView* MeshTexture;
 			ID3D11SamplerState* MeshSamplerState;
-
-		
 
 		public:
 			StaticMesh(Dx11Engine *Engine);

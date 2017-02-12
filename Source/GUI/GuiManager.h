@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <iterator>
 #include <sys/types.h>
+#include "../Graphics/Mesh/Mesh_Manager.h"
 
 
 class GuiManager
@@ -18,6 +19,7 @@ class GuiManager
 private:
 	ID3D11Device* m_Device;
 	ID3D11DeviceContext *m_DeviceContext;
+	MeshManager* meshManager;
 
 	//------Left Column Data---------//
 	float LeftPanelWidth = 200;
@@ -28,13 +30,20 @@ public:
 	~GuiManager();
 
 	void SetInputToImGui();
+
+	__inline void SetMeshManager(MeshManager* pMeshManager) { meshManager = pMeshManager; }
+
 	void PrepareGui();
 	void UpdateGui();
 	void RenderGui();
 
 	//------------ GUI VALUES-----------------
 	float g_RoughnessValue;
-	float g_GlossinessValue;
+	float g_MetalnessValue;
+	float g_Position[3];
+	float g_Rotation[3];
+	float g_Scale[3];
+
 
 	inline void SetupImGuiStyle(bool bStyleDark_, float alpha_)
 	{
@@ -47,7 +56,6 @@ public:
 		style.WindowRounding = 0.f;
 		style.ScrollbarRounding = 3.f;
 		style.FrameRounding = 3.f;
-		//style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 
 		style.Colors[ImGuiCol_Text] = ImVec4(0.73f, 0.73f, 0.73f, 1.00f);
 		style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -92,42 +100,6 @@ public:
 		style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
 		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.32f, 0.52f, 0.65f, 1.00f);
 		style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.50f);
-
-		/*
-		if (bStyleDark_)
-		{
-			for (int i = 0; i <= ImGuiCol_COUNT; i++)
-			{
-				ImVec4& col = style.Colors[i];
-				float H, S, V;
-				ImGui::ColorConvertRGBtoHSV(col.x, col.y, col.z, H, S, V);
-
-				if (S < 0.1f)
-				{
-					V = 1.0f - V;
-				}
-				ImGui::ColorConvertHSVtoRGB(H, S, V, col.x, col.y, col.z);
-				if (col.w < 1.00f)
-				{
-					col.w *= alpha_;
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i <= ImGuiCol_COUNT; i++)
-			{
-				ImVec4& col = style.Colors[i];
-				if (col.w < 1.00f)
-				{
-					col.x *= alpha_;
-					col.y *= alpha_;
-					col.z *= alpha_;
-					col.w *= alpha_;
-				}
-			}
-		}
-		*/
 	}
 };
 

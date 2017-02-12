@@ -89,7 +89,7 @@ float4 GetAlbedo(float2 a_TexCoord)
 	}
 	else
 	{
-		return float4(0.7f, 0.7f, 0.7f, 1.0f);
+		return mDiffuseColor;
 	}
 }
 
@@ -97,11 +97,11 @@ float GetRoughness(float2 a_TexCoord)
 {
 	if (bHaveRougnessMap > 0)
 	{
-		return RoughnessTexture.Sample(ObjSamplerState, a_TexCoord);
+		return RoughnessTexture.Sample(AnisoClamp, a_TexCoord);
 	}
 	else
 	{
-		return 1.0f;
+		return 0.8f;
 	}
 }
 
@@ -109,7 +109,7 @@ float GetMetallness(float2 a_TexCoord)
 {
 	if (bHaveMetallicMap > 0)
 	{
-		return MetallicTexture.Sample(ObjSamplerState, a_TexCoord);
+		return MetallicTexture.Sample(AnisoClamp, a_TexCoord);
 	}
 	else
 	{
@@ -211,7 +211,7 @@ float3 BRDF(float3 L, float3 V, float3 N, float3 cAlbedo, float pMetallic, float
 	cs = cs * dot_n_l;
 
 	diffuse_brdf = saturate(lerp(diffuse_brdf, cs.rgb, metallic));
-	diffuse_brdf *= base_color.rgb;
+	diffuse_brdf = base_color.rgb * base_color.rgb * diffuse_brdf;
 
 
 	
@@ -249,7 +249,8 @@ VOut VSMain(float4 inPos : POSITION, float2 inTexCoord : TEXCOORD, float3 inNorm
 float4 PSMain(VOut input) : SV_TARGET
 {
 	float3 Normal = normalize(input.Normal);
-
+/*
+*/
 	if (bHaveNormalMap > 0)
 	{
 		float3 Tangent = normalize(input.Tangent);

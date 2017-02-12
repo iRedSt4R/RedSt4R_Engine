@@ -55,6 +55,7 @@ namespace RedSt4R
 		XMVECTOR camPosition;
 		XMVECTOR camTarget;
 		XMVECTOR camUp;
+		
 
 	public:
 		Dx11Engine(HWND a_hwnd);

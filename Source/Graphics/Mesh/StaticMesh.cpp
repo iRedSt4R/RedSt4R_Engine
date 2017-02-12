@@ -35,7 +35,7 @@ RedSt4R::Graphics::StaticMesh::StaticMesh(char *filePath, Dx11Engine *Engine, wc
 
 	vPosition = XMFLOAT3(0, 0, 0);
 	vRotation = XMFLOAT3(0, 0, 0);
-	vScale = XMFLOAT3(0.2, 0.2, 0.2);
+	vScale = XMFLOAT3(1.f, 1.f, 1.f);
 
 	LoadMeshFromFile(filePath);
 
@@ -120,14 +120,12 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 		aiMesh* aMesh = aScene->mMeshes[index];
 		FaceCount = aMesh->mNumFaces;
 		VertexCount = FaceCount * 3;
-		//VertexCount = aMesh->mNumVertices;
 
 		for (unsigned int i = 0; i < aMesh->mNumVertices; i++)
 		{
 			aiVector3D vertexPos = aMesh->mVertices[i];
 			aiVector3D textCoord = aMesh->HasTextureCoords(0) ? aMesh->mTextureCoords[0][i] : aiVector3D(1, 1, 1);
 			aiVector3D normal = aMesh->HasNormals() ? aMesh->mNormals[i] : aiVector3D(1.0f, 1.0f, 1.0f);
-			//aiVector3D tangent = aMesh->HasTangentsAndBitangents() ? aMesh->mTangents[i] : aiVector3D(1.0f, 1.0f, 1.0f);
 			aiVector3D tangent = aMesh->mTangents[i];
 
 			VertexPosVec.push_back(vertexPos);
@@ -148,6 +146,7 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 
 			const aiMaterial* material = aScene->mMaterials[aMesh->mMaterialIndex];
 			int a = 5;
+			aiColor3D color;
 			int texIndex = 0;
 			aiString path;  // filename
 			std::string currentPath = "Assets/" + FolderName + "/";
@@ -160,6 +159,8 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 			else
 			{
 				matDesc.diffuseTextureDir = GetWC(&a_modelDesc->diffuseTexName[0]);
+				material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+				matDesc.diffuseColor = XMFLOAT4(color.r, color.g, color.b, 1.0f);
 			}
 
 			if (material->GetTexture(aiTextureType_HEIGHT, texIndex, &path) == AI_SUCCESS && a_modelDesc->flag == "use_def")
@@ -172,7 +173,7 @@ void RedSt4R::Graphics::StaticMesh::LoadMeshFromFileWithIndex(const aiScene *a_a
 				matDesc.normalTextureDir = GetWC(&a_modelDesc->normalTexName[0]);
 			}
 
-			if (material->GetTexture(aiTextureType_SPECULAR, texIndex, &path) == AI_SUCCESS)
+			if (material->GetTexture(aiTextureType_SPECULAR, texIndex, &path) == AI_SUCCESS && a_modelDesc->flag == "use_def")
 			{
 				std::string finalPath = currentPath + path.data;
 				matDesc.rougnessTextureDir = GetWC(&finalPath[0]);
@@ -323,7 +324,7 @@ void RedSt4R::Graphics::StaticMesh::UpdateMeshBuffers()
 	mScale = XMMatrixScaling(vScale.x, vScale.y, vScale.z);
 
 	mWorld = XMMatrixIdentity();
-	mWorld = mPosition * mRotation * mScale;
+	mWorld = mScale * mRotation * mPosition;
 	mWVP = XMMatrixIdentity();
 	mWVP = mWorld * m_Engine->GetCameraView() * m_Engine->GetCameraProjection();
 
@@ -360,7 +361,6 @@ void RedSt4R::Graphics::StaticMesh::LoadRSModelFile(char* filePath, RSMODEL_DESC
 		if (counter = 4) fin >> a_ModelDesc->normalTexName;
 		if (counter = 5) fin >> a_ModelDesc->roughnessTexName;
 		if (counter = 6) fin >> a_ModelDesc->metalnessTexName;
-		//counter++;
 	}
 
 	std::cout << a_ModelDesc->fileName << std::endl;

@@ -3,15 +3,19 @@
 RedSt4R::Graphics::ComplexMesh::ComplexMesh(Dx11Engine *Engine, char* MeshDir, std::string FolderName)
 {
 	m_Engine = Engine;
+	Begin();
 
 	LoadMeshFromFile(MeshDir, FolderName);
 }
 
 void RedSt4R::Graphics::ComplexMesh::Begin()
 {
-	vPosition = XMFLOAT3(0, 0, 0);
+	vPosition = XMFLOAT3(1, 1, 1);
 	vRotation = XMFLOAT3(0, 0, 0);
 	vScale = XMFLOAT3(1, 1, 1);
+
+	//Scale(10);
+
 }
 
 void RedSt4R::Graphics::ComplexMesh::Update()
@@ -20,7 +24,6 @@ void RedSt4R::Graphics::ComplexMesh::Update()
 	{
 		vMeshes[i]->Update();
 	}
-
 	//For fast access to rotate mesh with numpad keys
 	TestRotation();
 }
@@ -62,7 +65,7 @@ void RedSt4R::Graphics::ComplexMesh::LoadMeshFromFile(char* MeshDir, std::string
 	}
 	RS_LOG("Total Vertices: "<<TotalVertices)
 
-	this->Scale(15);
+	//this->Scale(1);
 }
 
 void RedSt4R::Graphics::ComplexMesh::LoadRSModelFile(char* filePath, RSMODEL_DESC* a_ModelDesc)
@@ -131,11 +134,11 @@ void RedSt4R::Graphics::ComplexMesh::TestRotation()
 
 void RedSt4R::Graphics::ComplexMesh::SetObjectPosition(XMFLOAT3 position)
 {
+	vPosition = position;
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
 		vMeshes[i]->SetObjectPosition(position);
 	}
-
 }
 
 void RedSt4R::Graphics::ComplexMesh::SetObjectScale(XMFLOAT3 scale)
@@ -156,6 +159,8 @@ void RedSt4R::Graphics::ComplexMesh::Scale(float scaleFactor)
 
 void RedSt4R::Graphics::ComplexMesh::RotateX(float angle)
 {
+	vRotation.x += angle;
+
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
 		vMeshes[i]->RotateX(angle);
@@ -164,6 +169,8 @@ void RedSt4R::Graphics::ComplexMesh::RotateX(float angle)
 
 void RedSt4R::Graphics::ComplexMesh::RotateY(float angle)
 {
+	vRotation.y += angle;
+
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
 		vMeshes[i]->RotateY(angle);
@@ -172,6 +179,8 @@ void RedSt4R::Graphics::ComplexMesh::RotateY(float angle)
 
 void RedSt4R::Graphics::ComplexMesh::RotateZ(float angle)
 {
+	vRotation.z += angle;
+
 	for (int i = 0; i < vMeshes.size(); i++)
 	{
 		vMeshes[i]->RotateZ(angle);

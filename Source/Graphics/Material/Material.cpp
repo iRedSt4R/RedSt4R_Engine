@@ -54,6 +54,8 @@ void RedSt4R::Graphics::Material::CreateMaterial(RS_Material_Desc &a_materialDes
 	r = MetallicTexture->LoadTexture(m_Engine->GetEngineResource(), a_materialDesc.metallicTextureDir, TEXTURE_TYPE_METALLIC);
 	if (r) bHaveMetallicMap	 = true;
 
+	if (!bHaveDiffuseTexture) cbMaterialObject.mDiffuseColor = a_materialDesc.diffuseColor;
+
 	bIsCreated = true;
 }
 
@@ -109,5 +111,5 @@ void RedSt4R::Graphics::Material::CreateBuffers()
 
 RedSt4R::Graphics::Material::~Material()
 {
-	delete DiffuseTexture;
+	//delete DiffuseTexture;
 }

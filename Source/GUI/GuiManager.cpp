@@ -75,21 +75,6 @@ void GuiManager::SetInputToImGui()
 	else
 		io.MouseDown[0] = false;
 
-	while (SDL_PollEvent(&sdl_Event))
-		switch (sdl_Event.type)
-		{
-			case SDL_KEYUP:
-			{
-				int key = sdl_Event.key.keysym.sym & ~SDLK_SCANCODE_MASK;
-				io.KeysDown[key] = (sdl_Event.type == SDL_KEYDOWN);
-				io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
-				io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
-				io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
-				io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
-			}
-		}
-	//Input
-
 }
 
 void GuiManager::PrepareGui()
@@ -143,12 +128,19 @@ void GuiManager::UpdateGui()
 
 	ImGui::Separator();
 	ImGui::SliderFloat("", &g_RoughnessValue, 0.0f, 1.0f, "Rougness = %.3f");
-	ImGui::SliderFloat("", &g_GlossinessValue, 0.0f, 1.0f, "Glossiness = %.3f");
+	ImGui::SliderFloat("", &g_MetalnessValue, 0.0f, 1.0f, "Metalness = %.3f");
+	ImGui::InputFloat3("Position", g_Position, -1, 0);
+	ImGui::InputFloat3("Rotation", g_Rotation, -1, 0);
+	ImGui::InputFloat3("Scale", g_Scale, -1, 0);
+
 	ImGui::Separator();
 	ImGui::Combo("", &myChoice, (const char**)&charFilesVec[0], charFilesVec.size(), -1);
 	if (ImGui::Button("Load Model"))
 	{
-		
+		std::string tempstr(charFilesVec[myChoice]);
+		std::string finalDir = "Assets/" + tempstr;
+		RS_WARNING(finalDir);
+		meshManager->AddWithOffset(convert(finalDir),0);
 	}
 	ImGui::Separator();
 	ImGui::InputText("String", buf, 256);
